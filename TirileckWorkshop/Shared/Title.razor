@@ -1,0 +1,17 @@
+﻿<div style="
+ color: #f7f21a;
+ font-size: 32px;"
+     onclick="@NavigateToMain">
+    Magic company
+</div>
+
+@code{
+    [Inject] public NavigationManager NavigationManager { get; set; }
+
+    void NavigateToMain()
+    {
+        NavigationManager.NavigateTo(NavigationManager.BaseUri);
+    }
+    
+
+}

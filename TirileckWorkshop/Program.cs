@@ -11,7 +11,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
 
