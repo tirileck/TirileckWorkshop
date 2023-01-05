@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 using TirileckWorkshop.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// DB
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql( builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
