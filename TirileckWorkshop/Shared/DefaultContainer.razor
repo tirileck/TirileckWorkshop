@@ -1,8 +1,12 @@
 ﻿
-<div style="max-width: 995px; margin: 0 auto;">
+<div style="max-width: 995px; margin: 0 auto;" class="@WrapperClass">
     @ChildContent
 </div>
 
 @code {
+    [Parameter]
     public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public string WrapperClass { get; set; }
 }
