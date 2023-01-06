@@ -11,5 +11,10 @@ public class DefaultProfile : Profile
         CreateMap<Workshop, WorkshopDto>().ReverseMap();
         CreateMap<DeviceTypeDto, DeviceType>().ReverseMap();
         CreateMap<AddOrderShortDto, Order>();
+        CreateMap<Order, TrackingOrderDro>()
+            .ForMember(x => x.DeviceTypeName,
+                x => x.MapFrom(x => string.IsNullOrEmpty(x.DeviceName) ? x.DeviceType.Name : x.DeviceName)
+            )
+            .ForMember(x => x.WorkshopAddress, x => x.MapFrom(x => x.Workshop.Address));
     }
 }

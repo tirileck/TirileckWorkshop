@@ -36,7 +36,10 @@ public class OrderService
 
     public async Task<TrackingOrderDro?> GetTrackedOrder(Guid trackNumber)
     {
-        var findedOrder = await _context.Orders.Where(x => x.TrackCode == trackNumber).FirstOrDefaultAsync();
+        var findedOrder = await _context.Orders
+            .Include(x => x.Workshop)
+            .Include(x => x.DeviceType)
+            .Where(x => x.TrackCode == trackNumber).FirstOrDefaultAsync();
         if (findedOrder is null)
             return null;
         else

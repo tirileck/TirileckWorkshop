@@ -1,6 +1,56 @@
 ﻿@page "/tracking"
-<h3>Tracking</h3>
+@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+
+<DefaultContainer WrapperClass="mt-4">
+    <InputText @bind-Value="_trackCode" class="@(validationStatus is false ? "invalid" : "valid")"/>
+    @if (validationStatus is false)
+    {
+        <label style="color: red">Некорректный трек номер</label>
+    }
+    <div type="button" onclick="@Find">Найти</div>
+    @if(_isBeforeFind){
+        <div>Введите трек номер для поиска</div>
+    }
+    else{
+        if (_order is null)
+        {
+            <div>По введенному трек номеру не нашлось заказов</div>
+        }
+        else
+        {
+            <div>@_order.FIO</div>
+        }
+    }
+    
+</DefaultContainer>
 
 @code {
+    bool? validationStatus;
+    string _trackCode;
+    TrackingOrderDro? _order;
+    bool _isBeforeFind = true;
+
+    [Inject] public OrderService OrderService { get; set; } 
     
+    async Task Find()
+    {
+        validationStatus = true;
+        Guid number;
+        var parseResult = Guid.TryParse(_trackCode, out number);
+        if (parseResult)
+        {
+            _order = await GetTrackingOrder(number);
+            _isBeforeFind = false;
+        }
+        else
+        {
+            validationStatus = false;
+        }
+    }
+
+    async Task<TrackingOrderDro?> GetTrackingOrder(Guid trackNumber)
+    {
+        return await OrderService.GetTrackedOrder(trackNumber);
+    }
 }
