@@ -15,10 +15,10 @@ public class AddOrderShortDto
     public string Description { get; set; }
 
     public string DeviceName { get; set; }
-
-    public long? DeviceTypeId { get; set; }
-
-    public long? WorkshopId { get; set; }
+    
+    public DeviceTypeDto? DeviceType { get; set; }
+    
+    public WorkshopDto? Workshop { get; set; }
 }
 
 public static class AddOrderShortDtoExtensions
@@ -41,19 +41,15 @@ public static class AddOrderShortDtoExtensions
                 .NotEmpty()
                 .WithMessage("Введите телефон");
 
-            RuleFor(x => x.WorkshopId)
+            RuleFor(x => x.Workshop)
                 .NotNull()
-                .WithMessage("Выберите предприятие")
-                .GreaterThan(0)
                 .WithMessage("Выберите предприятие");
 
-            RuleFor(x => x.DeviceTypeId)
+            RuleFor(x => x.DeviceType)
                 .NotNull()
-                .WithMessage("Выберите тип устройства")
-                .GreaterThan(0)
                 .WithMessage("Выберите тип устройства");
 
-            When(x => x.DeviceTypeId is 1, () =>
+            When(x => x.DeviceType is { Id: 1 }, () =>
             {
                 RuleFor(x => x.DeviceName)
                     .NotEmpty()

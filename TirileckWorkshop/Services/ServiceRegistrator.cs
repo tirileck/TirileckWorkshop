@@ -1,4 +1,6 @@
-﻿namespace TirileckWorkshop.Services;
+﻿using TabBlazor;
+
+namespace TirileckWorkshop.Services;
 
 public static class ServiceRegistrator
 {
@@ -7,5 +9,7 @@ public static class ServiceRegistrator
         services.AddScoped<WorkshopsService>();
         services.AddScoped<DeviceTypeService>();
         services.AddScoped<OrderService>();
+
+        services.AddTabler();
     }
 }

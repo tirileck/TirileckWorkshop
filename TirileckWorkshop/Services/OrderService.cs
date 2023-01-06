@@ -28,6 +28,10 @@ public class OrderService
         storageOrder.StatusDate = DateTime.UtcNow;
         storageOrder.OrderStatus = OrderStatus.New;
         storageOrder.TrackCode = Guid.NewGuid();
+        storageOrder.DeviceTypeId = order.DeviceType?.Id;
+        storageOrder.WorkshopId = order.Workshop?.Id;
+        storageOrder.DeviceType = null;
+        storageOrder.Workshop = null;
         if (storageOrder.DeviceTypeId is not 1)
             storageOrder.DeviceName = null;
         _context.Add(storageOrder);
