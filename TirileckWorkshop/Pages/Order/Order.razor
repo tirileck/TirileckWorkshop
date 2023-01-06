@@ -11,6 +11,7 @@
 
 <Page>
   <DefaultContainer WrapperClass="mt-4">
+    <Dimmer Active="@formLoading">
     <div class="oder-form">
       <div class="order-form-header">
         Здесь вы можете оставить заявку на ремонт
@@ -37,16 +38,16 @@
             <label class="form-label">Предприятие</label>
             <ItemSelect TItem="WorkshopDto"
                         TValue="WorkshopDto"
-                        Items="_workshops" 
-                        SelectedTextExpression="e=> e.Address" 
-                        @bind-SelectedValue="_model.Workshop" 
+                        Items="_workshops"
+                        SelectedTextExpression="e => e.Address"
+                        @bind-SelectedValue="_model.Workshop"
                         Clearable="true"
                         NoSelectedText="Выберите предприятие"
-                        SearchMethod="SearchWorkshop" 
+                        SearchMethod="SearchWorkshop"
                         SearchPlaceholderText="Поиск">
-                <ListTemplate>
-                    @context.Address
-                </ListTemplate>
+              <ListTemplate>
+                @context.Address
+              </ListTemplate>
             </ItemSelect>
             <TabValidationMessage For="(() => _model.Workshop)"></TabValidationMessage>
           </div>
@@ -54,9 +55,9 @@
             <label class="form-label">Тип устройства</label>
             <ItemSelect TItem="DeviceTypeDto"
                         TValue="DeviceTypeDto"
-                        Items="_deviceTypes" 
-                        SelectedTextExpression="e=> e.Name" 
-                        @bind-SelectedValue="_model.DeviceType" 
+                        Items="_deviceTypes"
+                        SelectedTextExpression="e => e.Name"
+                        @bind-SelectedValue="_model.DeviceType"
                         Clearable="true"
                         NoSelectedText="Выберите тип девайса">
               <ListTemplate>
@@ -83,10 +84,12 @@
         </TablerForm>
       </div>
     </div>
-   
+    </Dimmer>
+
   </DefaultContainer>
 </Page>
 @code {
+  bool formLoading;
   AddOrderShortDto _model = new();
   List<WorkshopDto> _workshops = new();
   List<DeviceTypeDto> _deviceTypes = new();
@@ -122,6 +125,7 @@
   
   async Task AddOrder()
   {
+    formLoading = true;
     await OrderService.AddOrder(_model);
     await ModalService.ShowDialogAsync( new DialogOptions()
     {
@@ -131,6 +135,7 @@
       OkText = "Хорошо"
     });
     _model = new();
+    formLoading = false;
   }
 
   async Task SubmitForm()

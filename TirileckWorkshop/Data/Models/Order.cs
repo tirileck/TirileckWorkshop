@@ -22,6 +22,8 @@ public class Order
     public OrderStatus OrderStatus { get; set; }
 
     public DateTime StatusDate { get; set; }
+    
+    public string? StatusHistory { get; set; }
 
     public DateTime CreateDate { get; set; }
 

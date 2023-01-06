@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TirileckWorkshop.Data;
 using TirileckWorkshop.Data.Dto;
 using TirileckWorkshop.Data.Enums;
@@ -21,7 +22,7 @@ public class OrderService
         _mapper = mapper;
     }
 
-    public async Task AddOrder(AddOrderShortDto order)
+    public async Task<OrderDto> AddOrder(AddOrderShortDto order)
     {
         var storageOrder = _mapper.Map<Order>(order);
         storageOrder.CreateDate = DateTime.UtcNow;
@@ -36,6 +37,28 @@ public class OrderService
             storageOrder.DeviceName = null;
         _context.Add(storageOrder);
         await _context.SaveChangesAsync();
+        _context.Entry(storageOrder).State = EntityState.Detached;
+        var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
+        return orderDtoWithStatus;
+    }
+
+    public async Task<OrderDto> AddOrderStatus(long storageOrderId, OrderStatus status)
+    {
+        var order = _context.Orders.Single(x => x.Id == storageOrderId);
+        order.OrderStatus = status;
+        order.StatusDate = DateTime.UtcNow;
+        var orderHistory = string.IsNullOrEmpty(order.StatusHistory)
+            ? new List<StatusHistoryItem>()
+            : JsonConvert.DeserializeObject<List<StatusHistoryItem>>(order.StatusHistory);
+        orderHistory.Add(new StatusHistoryItem()
+        {
+            Status = order.OrderStatus,
+            StatusTime = order.StatusDate
+        });
+        order.StatusHistory = JsonConvert.SerializeObject(orderHistory);
+        _context.Update(order);
+        await _context.SaveChangesAsync();
+        return _mapper.Map<OrderDto>(order);
     }
 
     public async Task<TrackingOrderDro?> GetTrackedOrder(Guid trackNumber)

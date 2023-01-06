@@ -1,31 +1,51 @@
 ﻿@page "/tracking"
 @using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Data.Enums
 @using TirileckWorkshop.Services
 
 <DefaultContainer WrapperClass="mt-4">
+    <Dimmer>
     <InputText @bind-Value="_trackCode" class="@(validationStatus is false ? "invalid" : "valid")"/>
     @if (validationStatus is false)
     {
         <label style="color: red">Некорректный трек номер</label>
     }
     <div type="button" onclick="@Find">Найти</div>
-    @if(_isBeforeFind){
+    @if (_isBeforeFind)
+    {
         <div>Введите трек номер для поиска</div>
     }
-    else{
+    else
+    {
         if (_order is null)
         {
             <div>По введенному трек номеру не нашлось заказов</div>
         }
         else
         {
-            <div>@_order.FIO</div>
+            <Timeline Type="TimelineType.Default">
+                @foreach (var statusHistoryItem in _order.StatusHistory.OrderByDescending(x => x.StatusTime))
+                {
+                    <TimelineItem Time="@statusHistoryItem.StatusTime.ToString("dd.MM.yyyy")"
+                                  IconColor="@statusHistoryItem.Status.GetColor()"
+                                  Title="@statusHistoryItem.Status.GetName()">
+                        <IconTemplate>
+                            <Icon IconType="@statusHistoryItem.Status.GetIcon()" Size="16"/>
+                        </IconTemplate>
+                        <ChildContent>
+                            <p class="text-muted">@statusHistoryItem.Status.GetSubtext()</p>
+                        </ChildContent>
+                    </TimelineItem>
+                }
+            </Timeline>
         }
     }
-    
+    </Dimmer>
+
 </DefaultContainer>
 
 @code {
+    bool _formLoading;
     bool? validationStatus;
     string _trackCode;
     TrackingOrderDro? _order;
@@ -35,6 +55,7 @@
     
     async Task Find()
     {
+        _formLoading = true;
         validationStatus = true;
         Guid number;
         var parseResult = Guid.TryParse(_trackCode, out number);
@@ -47,6 +68,7 @@
         {
             validationStatus = false;
         }
+        _formLoading = false;
     }
 
     async Task<TrackingOrderDro?> GetTrackingOrder(Guid trackNumber)

@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<link type="text/css" ref="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+
+<ModalContainer />
+<ToastContainer />
+
+<Microsoft.AspNetCore.Components.Web.PageTitle>Magic Adminka</Microsoft.AspNetCore.Components.Web.PageTitle>
+
+<div class="page">
+    <header>
+        <Title/>
+        <NavMenu/>
+    </header>
+
+    <main>
+        <article class="content">
+            @Body
+        </article>
+    </main>
+</div>
