@@ -1,0 +1,39 @@
+﻿@page "/adminka/auth"
+@using TirileckWorkshop.Data.Dto
+@layout AuthLayout
+
+<div class="auth-wrapper">
+    <div class="auth-content">
+        <div class="auth-form">
+              <div class="auth-form-header">
+                Авторизация
+              </div>
+              <div class="auth-form-body">
+                <TablerForm Model="@_model" OnValidSubmit="SubmitForm">
+                  <FluentValidationValidator/>
+                  <div class="mb-1">
+                    <label class="form-label">Логин</label>
+                    <InputText class="form-control" @bind-Value="_model.Login"></InputText>
+                    <TabValidationMessage For="(() => _model.Login)"></TabValidationMessage>
+                  </div>
+                  <div class="mb-2">
+                    <label class="form-label">Пароль</label>
+                    <InputText type="password" class="form-control" @bind-Value="_model.Password"></InputText>
+                    <TabValidationMessage For="(() => _model.Password)"></TabValidationMessage>
+                  </div>
+        
+                  <Button Type="ButtonType.Submit" Text="Авторизоваться" class="mt-1 w-100"></Button>
+                </TablerForm>
+              </div>
+            </div>
+    </div>
+</div>
+
+@code {
+  AuthDto _model = new AuthDto();
+  
+  async Task SubmitForm()
+  {
+    await Task.CompletedTask;
+  }
+}

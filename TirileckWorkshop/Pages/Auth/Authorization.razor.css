@@ -1,0 +1,18 @@
+.auth-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-content{
+    width: 300px;
+    border-radius: 15px;
+    background-color: white;
+    padding: 30px;
+}
+
+.auth-form-header{
+    font-size: 32px;
+    font-weight: 600;
+}
