@@ -71,7 +71,7 @@ public static class AddOrderShortDtoExtensions
 
             RuleFor(x => x.Description)
                 .NotEmpty()
-                .WithMessage("Выберите тип устройства");
+                .WithMessage("Введите описание проблемы");
             
         }
     }
