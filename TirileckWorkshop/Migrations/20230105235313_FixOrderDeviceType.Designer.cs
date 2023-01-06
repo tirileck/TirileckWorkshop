@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TirileckWorkshop.Data;
@@ -11,9 +12,11 @@ using TirileckWorkshop.Data;
 namespace TirileckWorkshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230105235313_FixOrderDeviceType")]
+    partial class FixOrderDeviceType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,43 +55,6 @@ namespace TirileckWorkshop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DeviceTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Другое"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "ПК"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Ноутбук"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Телефон"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "Планшет"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Name = "Телевизор"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Name = "Принтер"
-                        });
                 });
 
             modelBuilder.Entity("TirileckWorkshop.Data.Models.Order", b =>

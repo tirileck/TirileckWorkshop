@@ -1,11 +1,9 @@
 ﻿using TirileckWorkshop.Data.Enums;
 
-namespace TirileckWorkshop.Data.Models;
+namespace TirileckWorkshop.Data.Dto;
 
-public class Order
+public class TrackingOrderDro
 {
-    public long Id { get; set; }
-
     public string FIO { get; set; }
 
     public string Email { get; set; }
@@ -14,10 +12,7 @@ public class Order
 
     public string Description { get; set; }
 
-    public string? DeviceName { get; set; }
-
-    public DeviceType? DeviceType { get; set; }
-    public long? DeviceTypeId { get; set; }
+    public string DeviceTypeName { get; set; }
 
     public OrderStatus OrderStatus { get; set; }
 
@@ -27,6 +22,5 @@ public class Order
 
     public Guid TrackCode { get; set; }
 
-    public Workshop Workshop { get; set; }
-    public long? WorkshopId { get; set; }
+    public string WorkshopAddress { get; set; }
 }

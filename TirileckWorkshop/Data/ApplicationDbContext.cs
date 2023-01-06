@@ -21,6 +21,17 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DeviceType>().HasKey(x => x.Id);
+        modelBuilder.Entity<DeviceType>()
+            .HasData(new[]
+            {
+                new DeviceType() { Id = 1, Name = "Другое" },
+                new DeviceType() { Id = 2, Name = "ПК" },
+                new DeviceType() { Id = 3, Name = "Ноутбук" },
+                new DeviceType() { Id = 4, Name = "Телефон" },
+                new DeviceType() { Id = 5, Name = "Планшет" },
+                new DeviceType() { Id = 6, Name = "Телевизор" },
+                new DeviceType() { Id = 7, Name = "Принтер" },
+            });
         
         modelBuilder.Entity<Role>().HasKey(x => x.Id);
         

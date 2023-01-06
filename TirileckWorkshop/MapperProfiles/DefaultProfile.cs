@@ -9,5 +9,7 @@ public class DefaultProfile : Profile
     public DefaultProfile()
     {
         CreateMap<Workshop, WorkshopDto>().ReverseMap();
+        CreateMap<DeviceTypeDto, DeviceType>().ReverseMap();
+        CreateMap<AddOrderShortDto, Order>();
     }
 }

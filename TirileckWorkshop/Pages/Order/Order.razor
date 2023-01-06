@@ -1,7 +1,9 @@
 ﻿@page "/order"
-@using Microsoft.AspNetCore.Components
 @using TirileckWorkshop.Data.Dto
 @using TirileckWorkshop.Services
+@using FluentValidation.Results
+
+
 
 <DefaultContainer WrapperClass="mt-4">
   <div class="oder-form">
@@ -9,42 +11,71 @@
       Здесь вы можете оставить заявку на ремонт
     </div>
     <div class="order-form-body">
-      <EditForm Model = "_model">
-        <DataAnnotationsValidator/>
-        <ValidationSummary />
+      <EditForm EditContext="_editContext"  OnSubmit="@SubmitForm">
+        <FluentValidationValidator/>
+        @* <ValidationSummary/> *@
         <div class="row mb-3">
           <label for="FIO" class="col-sm-2 col-form-label">ФИО</label>
           <div class="col-sm-10">
             <InputText @bind-Value="_model.FIO" class="form-control" id="FIO"/>
+            <ValidationMessage For="@(() => _model.FIO)"></ValidationMessage>
           </div>
         </div>
         <div class="row mb-3">
           <label for="email" class="col-sm-2 col-form-label">E-mail</label>
           <div class="col-sm-10">
             <InputText type="email" @bind-Value="_model.Email" class="form-control" id="email"/>
+            <ValidationMessage For="@(() => _model.Email)"></ValidationMessage>
           </div>
         </div>
         <div class="row mb-3">
           <label for="phone" class="col-sm-2 col-form-label">Телефон</label>
           <div class="col-sm-10">
             <InputText type="phone" @bind-Value="_model.PhoneNumber" class="form-control" id="phone"/>
+            <ValidationMessage For="@(() => _model.PhoneNumber)"></ValidationMessage>
           </div>
         </div>
         <div class="row mb-3">
           <label for="workshop" class="col-sm-2 col-form-label">Предприятие</label>
           <div class="col-sm-10">
             <InputSelect @bind-Value="_model.WorkshopId" id="workshop" class="form-select" style="width: 100%;">
+              <option disabled selected value>Выберите значение</option>
               @foreach (var workshop in _workshops)
               {
                 <option value="@workshop.Id">@workshop.Address</option>
               }
             </InputSelect>
+            <ValidationMessage For="@(() => _model.WorkshopId)"></ValidationMessage>
           </div>
         </div>
+        <div class="row mb-3">
+          <label for="deviceType" class="col-sm-2 col-form-label">Тип устройства</label>
+          <div class="col-sm-10">
+            <InputSelect @bind-Value="_model.DeviceTypeId" id="deviceType" class="form-select" style="width: 100%;">
+              <option disabled selected value>Выберите значение</option>
+              @foreach (var deviceType in _deviceTypes)
+              {
+                <option value="@deviceType.Id">@deviceType.Name</option>
+              }
+            </InputSelect>
+            <ValidationMessage For="@(() => _model.DeviceTypeId)"></ValidationMessage>
+          </div>
+        </div>
+        @if (_model.DeviceTypeId is 1)
+        {
+          <div class="row mb-3">
+            <label for="deviceName" class="col-sm-2 col-form-label">Свой тип</label>
+            <div class="col-sm-10">
+              <InputText @bind-Value="_model.DeviceName" class="form-control" id="deviceName"/>
+              <ValidationMessage For="@(() => _model.DeviceName)"></ValidationMessage>
+            </div>
+          </div>
+        }
         <div class="row mb-3">
           <label for="description" class="col-sm-2 col-form-label">Описание проблемы</label>
           <div class="col-sm-10">
             <InputTextArea @bind-Value="_model.Description" class="form-control" id="description"/>
+            <ValidationMessage For="@(() => _model.Description)"></ValidationMessage>
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Отправить</button>
@@ -55,15 +86,22 @@
 </DefaultContainer>
 
 @code {
-
+  EditContext _editContext;
   AddOrderShortDto _model = new();
   List<WorkshopDto> _workshops = new();
-  
+  List<DeviceTypeDto> _deviceTypes = new();
+  List<ValidationFailure> _validationErrors = new();
+
   [Inject] public WorkshopsService WorkshopsService { get; set; } 
+  [Inject] public DeviceTypeService DeviceTypeService { get; set; } 
+  [Inject] public OrderService OrderService { get; set; } 
+  [Inject] public AddOrderShortDtoExtensions.AddOrderShortStoValidator Validator { get; set; } 
 
   protected override async Task OnInitializedAsync()
   {
+    _editContext = new EditContext(_model);
     _workshops = await GetWorkshops();
+    _deviceTypes = await GetDeviceTypes();
     
     await base.OnInitializedAsync();
   }
@@ -72,4 +110,25 @@
   {
     return await WorkshopsService.GetWorkshops();
   }
+
+  async Task<List<DeviceTypeDto>> GetDeviceTypes()
+  {
+    return await DeviceTypeService.GetDeviceTypes();
+  }
+  
+  async Task AddOrder()
+  {
+    await OrderService.AddOrder(_model);
+  }
+
+  async Task SubmitForm()
+  {
+    if (_editContext != null && _editContext.Validate())
+    {
+      await AddOrder();
+      await Task.CompletedTask;
+    }
+  }
+
+
 }

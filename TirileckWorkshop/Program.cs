@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using TirileckWorkshop.Data;
+using TirileckWorkshop.Data.Dto;
 using TirileckWorkshop.MapperProfiles;
 using TirileckWorkshop.Services;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+ValidatorsRegistrator.Register(builder.Services);
 ServiceRegistrator.Register(builder.Services);
 MapperRegistrator.Register(builder.Services);
 
