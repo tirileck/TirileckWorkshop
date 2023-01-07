@@ -1,0 +1,16 @@
+.tracking-block-header{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.tracking-block-searchbox{
+    width: 100%;
+    display: flex;
+}
+
+.tracking-block-component{
+    padding: 30px;
+    display: flex;
+    width: 100%;
+}

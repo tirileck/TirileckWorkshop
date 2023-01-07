@@ -1,0 +1,78 @@
+﻿@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Data.Enums
+@using TirileckWorkshop.Services
+
+<Dimmer>
+    <div class="tracking-block-component">
+        <div class="tracking-block-header">
+            <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Статус вашего заказа по трек номеру</div>
+            <div class="tracking-block-searchbox">
+                <InputText @bind-Value="_trackCode" class="@(validationStatus is false ? "invalid form-control" : "valid form-control")"/>
+                <Button BackgroundColor="TablerColor.Primary" Type="ButtonType.Button" Text="Найти" OnClick="@Find" style="margin-left: 5px;"/>
+            </div>
+            @if (validationStatus is false)
+            {
+                <label style="color: red; margin-top:  20px; font-weight: 600; font-size: 18px;">Некорректный трек номер</label>
+            }
+        </div>
+        <div class="tracking-block-body">
+             @if (!_isBeforeFind)
+                {
+                    if (_order is null)
+                    {
+                        <div style="text-align: center;">По введенному трек номеру не нашлось заказов</div>
+                    }
+                    else
+                    {
+                        <Timeline Type="TimelineType.Default">
+                            @foreach (var statusHistoryItem in _order.StatusHistory.OrderByDescending(x => x.StatusTime))
+                            {
+                                <TimelineItem Time="@statusHistoryItem.StatusTime.ToString("dd.MM.yyyy")"
+                                              IconColor="@statusHistoryItem.Status.GetColor()"
+                                              Title="@statusHistoryItem.Status.GetName()">
+                                    <IconTemplate>
+                                        <Icon IconType="@statusHistoryItem.Status.GetIcon()" Size="16"/>
+                                    </IconTemplate>
+                                    <ChildContent>
+                                        <p class="text-muted">@statusHistoryItem.Status.GetSubtext()</p>
+                                    </ChildContent>
+                                </TimelineItem>
+                            }
+                        </Timeline>
+                    }
+                }
+        </div>
+    </div>
+   
+</Dimmer>
+
+@code {
+    bool _formLoading;
+    bool? validationStatus;
+    string _trackCode = string.Empty;
+    TrackingOrderDro? _order;
+    bool _isBeforeFind = true;
+
+    [Inject] public OrderService OrderService { get; set; } 
+    
+    async Task Find()
+    {
+        _formLoading = true;
+        validationStatus = true;
+        if (_trackCode.Length == 10 && long.TryParse(_trackCode, out var longCode))
+        {
+            _order = await GetTrackingOrder(_trackCode);
+            _isBeforeFind = false;
+        }
+        else
+        {
+            validationStatus = false;
+        }
+        _formLoading = false;
+    }
+
+    async Task<TrackingOrderDro?> GetTrackingOrder(string trackNumber)
+    {
+        return await OrderService.GetTrackedOrder(trackNumber);
+    }
+}

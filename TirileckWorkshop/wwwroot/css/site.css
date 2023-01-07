@@ -65,3 +65,12 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+
+.yellow-neon{
+    text-shadow:
+            0 0 1px #fff,
+            0 0 2px #fff,
+            0 0 5px #f7f21a,
+            0 0 11px #f7f21a;
+}

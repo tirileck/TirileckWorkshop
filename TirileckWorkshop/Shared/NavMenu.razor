@@ -1,7 +1,6 @@
 ﻿<nav>
     <div onclick="@(async () => await NavigateTo(NavLinks.About))">О нас</div>
     <div onclick="@(async () => await NavigateTo(NavLinks.Order))">Оставить заявку</div>
-    <div onclick="@(async () => await NavigateTo(NavLinks.Track))">Отследить</div>
 </nav>
 
 @code{
@@ -18,16 +17,12 @@
             case NavLinks.Order:
                 NavigationManager.NavigateTo(NavigationManager.BaseUri + "/order");
                 break;
-            case NavLinks.Track:
-                NavigationManager.NavigateTo(NavigationManager.BaseUri + "/tracking");
-                break;
         }
     }
 
     enum NavLinks
     {
         About,
-        Order,
-        Track
+        Order
     }
 }
