@@ -85,6 +85,8 @@ public class OrderService
     {
         var storageOrder = await _context.Orders.Where(x => x.Id == order.Id).SingleAsync();
         storageOrder.WorkshopId = order.Workshop.Id;
+        storageOrder.AllCost = order.AllCost;
+        storageOrder.SpareCost = order.SpareCost;
         _context.Update(storageOrder);
         await _context.SaveChangesAsync();
         _context.Entry(storageOrder).State = EntityState.Detached;

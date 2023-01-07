@@ -53,6 +53,21 @@
                 <Select Items="EnumHelper.GetList<OrderStatus>()" @bind-SelectedValue="@context.OrderStatus" TextExpression="e=> e.GetName()" ValueExpression="e=> e" />
             </EditorTemplate>
         </Column>
+        <Column Item="OrderDto" Property="e=>e.SpareCost" Title="Цена запчастей" >
+            <EditorTemplate>
+                <input type="number" step=".01"  class="form-control" @bind-value="@context.SpareCost" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.AllCost" Title="Общая цена" >
+            <EditorTemplate>
+                <input type="number" step=".01" class="form-control" @bind-value="@context.AllCost" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.ProfitCost" Title="Профит" >
+            <EditorTemplate>
+                <input disabled type="number" class="form-control" @bind-value="@context.ProfitCost" />
+            </EditorTemplate>
+        </Column>
 
 
         <Column Item="OrderDto"  Title="" ActionColumn Width="130px">

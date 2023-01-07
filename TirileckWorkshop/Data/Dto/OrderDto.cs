@@ -31,4 +31,21 @@ public class OrderDto
 
     public WorkshopDto Workshop { get; set; }
     public long? WorkshopId { get; set; }
+    
+    public decimal? SpareCost { get; set; }
+
+    public decimal? AllCost { get; set; }
+
+    public decimal ProfitCost {
+        get
+        {
+            if (AllCost.HasValue && SpareCost.HasValue)
+                return AllCost.Value - SpareCost.Value;
+            else if (AllCost.HasValue)
+                return AllCost.Value;
+            else
+                return 0;
+        }
+        set { ProfitCost = value; }
+    }
 }

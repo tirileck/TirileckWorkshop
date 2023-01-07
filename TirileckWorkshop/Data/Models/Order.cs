@@ -31,4 +31,8 @@ public class Order
 
     public Workshop Workshop { get; set; }
     public long? WorkshopId { get; set; }
+    
+    public decimal? SpareCost { get; set; }
+
+    public decimal? AllCost { get; set; }
 }
