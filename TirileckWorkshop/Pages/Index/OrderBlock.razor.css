@@ -1,0 +1,16 @@
+﻿.order-block-header{
+    flex: 1;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.order-block-component{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.order-block-body{
+    margin-top:  20px;
+}

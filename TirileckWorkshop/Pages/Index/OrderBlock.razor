@@ -1,0 +1,149 @@
+﻿@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+@using TabBlazor.Components.Modals
+
+<div class="order-block-component" name="order-block">
+  <div class="order-block-header">
+    @if (isSended == false)
+    {
+      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Здесь вы можете оставить заявку на ремонт</div>
+    }
+    else
+    {
+      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Спасибо за оставленную заявку. Мы вам перезвоним:)</div>
+      <div style="color: green; display: flex; justify-content: center; margin-top: 50px; margin-bottom: 30px; scale: 10" >
+        <i class="fa fa-check" aria-hidden="true"></i>
+      </div>
+    }
+  </div>
+  @if (isSended == false)
+  {
+     <div class="order-block-body">
+    <Dimmer Active="@formLoading">
+      <TablerForm Model="@_model" OnValidSubmit="SubmitForm">
+        <FluentValidationValidator/>
+        <div class="mb-3">
+          <label class="form-label">Ваше имя</label>
+          <InputText class="form-control" @bind-Value="_model.FIO"></InputText>
+          <TabValidationMessage For="(() => _model.FIO)"></TabValidationMessage>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">E-mail</label>
+          <InputText type="email" class="form-control" @bind-Value="_model.Email"></InputText>
+          <TabValidationMessage For="(() => _model.Email)"></TabValidationMessage>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Номер телефона</label>
+          <InputText type="phone" class="form-control" @bind-Value="_model.PhoneNumber"></InputText>
+          <TabValidationMessage For="(() => _model.PhoneNumber)"></TabValidationMessage>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Предприятие</label>
+          <ItemSelect TItem="WorkshopDto"
+                      TValue="WorkshopDto"
+                      Items="_workshops"
+                      SelectedTextExpression="e => e.Address"
+                      @bind-SelectedValue="_model.Workshop"
+                      Clearable="true"
+                      NoSelectedText="Выберите предприятие"
+                      SearchMethod="SearchWorkshop"
+                      SearchPlaceholderText="Поиск">
+            <ListTemplate>
+              @context.Address
+            </ListTemplate>
+          </ItemSelect>
+          <TabValidationMessage For="(() => _model.Workshop)"></TabValidationMessage>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Тип устройства</label>
+          <ItemSelect TItem="DeviceTypeDto"
+                      TValue="DeviceTypeDto"
+                      Items="_deviceTypes"
+                      SelectedTextExpression="e => e.Name"
+                      @bind-SelectedValue="_model.DeviceType"
+                      Clearable="true"
+                      NoSelectedText="Выберите тип девайса">
+            <ListTemplate>
+              @context.Name
+            </ListTemplate>
+          </ItemSelect>
+          <TabValidationMessage For="(() => _model.DeviceType)"></TabValidationMessage>
+        </div>
+        @if (_model.DeviceType is {Id: 1})
+        {
+          <div class="mb-3">
+            <label class="form-label">Свой тип</label>
+            <InputText class="form-control" @bind-Value="_model.DeviceName"></InputText>
+            <TabValidationMessage For="(() => _model.DeviceName)"></TabValidationMessage>
+          </div>
+        }
+        <div class="mb-3">
+          <label class="form-label">Описание проблемы</label>
+          <InputText class="form-control" @bind-Value="_model.Description"></InputText>
+          <TabValidationMessage For="(() => _model.Description)"></TabValidationMessage>
+        </div>
+
+        <Button Type="ButtonType.Submit" Text="Отправить" class="mt-1 w-100"></Button>
+      </TablerForm>
+        </Dimmer>
+  </div>
+  }
+ 
+</div>
+@code {
+    bool formLoading;
+      AddOrderShortDto _model = new();
+      List<WorkshopDto> _workshops = new();
+      List<DeviceTypeDto> _deviceTypes = new();
+      bool isSended = false;
+    
+      [Inject] public IModalService ModalService { get; set; }
+      [Inject] public WorkshopsService WorkshopsService { get; set; } 
+      [Inject] public DeviceTypeService DeviceTypeService { get; set; } 
+      [Inject] public OrderService OrderService { get; set; } 
+    
+      protected override async Task OnInitializedAsync()
+      {
+        _workshops = await GetWorkshops();
+        _deviceTypes = await GetDeviceTypes();
+        
+        await base.OnInitializedAsync();
+      }
+    
+      async Task<List<WorkshopDto>> GetWorkshops()
+      {
+        return await WorkshopsService.GetWorkshops();
+      }
+    
+      async Task<List<DeviceTypeDto>> GetDeviceTypes()
+      {
+        return await DeviceTypeService.GetDeviceTypes();
+      }
+      
+      private List<WorkshopDto> SearchWorkshop(string arg)
+      {
+        return (string.IsNullOrEmpty(arg) ? _workshops.ToList() : _workshops.Where(x => x.Address.Contains(arg, StringComparison.InvariantCultureIgnoreCase)).ToList());
+      }
+      
+      async Task AddOrder()
+      {
+        formLoading = true;
+        await OrderService.AddOrder(_model);
+        await ModalService.ShowDialogAsync( new DialogOptions()
+        {
+          MainText = "Ваша заявка принята!",
+          SubText = "Мы вам перезвоним",
+          CancelText = "",
+          OkText = "Хорошо"
+        });
+        isSended = true;
+        formLoading = false;
+      }
+    
+      async Task SubmitForm()
+      {
+        await AddOrder();
+        await Task.CompletedTask;
+      }
+
+}

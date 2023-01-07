@@ -1,6 +1,6 @@
 ﻿<nav>
+    <div style="width: 200px" onclick="@(async () => await NavigateTo(NavLinks.About))"></div>  @*Костыль для центрирования*@
     <div onclick="@(async () => await NavigateTo(NavLinks.About))">О нас</div>
-    <div onclick="@(async () => await NavigateTo(NavLinks.Order))">Оставить заявку</div>
 </nav>
 
 @code{
