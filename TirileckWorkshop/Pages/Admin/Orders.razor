@@ -1,0 +1,90 @@
+﻿@page "/adminka/orders"
+
+@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+@layout AdminLayout
+
+<AdminPageHeader Title="Заказы"/>
+
+<Table Item="OrderDto" Items="_orders" PageSize="10" Hover @ref="table" AddItemFactory="AddItem">
+    <HeaderTemplate>
+        <strong>Заказы</strong>
+    </HeaderTemplate>
+
+    <ChildContent>
+        <Column Item="OrderDto" Property="e=>e.FIO" Title="ФИО" Sortable Searchable>
+            <EditorTemplate>
+                <input type="text" class="form-control" @bind-value="@context.FIO" />
+            </EditorTemplate>
+        </Column>
+
+        <Column Item="OrderDto"  Title="" ActionColumn Width="130px">
+            <Template>
+                    <span @onclick="(() => table.EditItem(context))" @onclick:stopPropagation>
+                        <span class="clickable-text">Изменить</span>
+                    </span>
+            </Template>
+            <EditorTemplate>
+                <span @onclick="(() => table.CloseEdit())" @onclick:stopPropagation>
+                    <span class="clickable-text">Сохранить</span>
+                </span>
+                <span @onclick="(() => table.CancelEdit())" @onclick:stopPropagation>
+                    <span class="clickable-text">Отменить</span>
+                </span>
+            </EditorTemplate>
+        </Column>
+    </ChildContent>
+
+    <DetailsTemplate>
+        <Card>
+            <CardHeader>
+                Описание проблемы
+            </CardHeader>
+
+            <CardBody>
+                @context.Description
+            </CardBody>
+        </Card>
+    </DetailsTemplate>
+</Table>
+
+
+@code {
+    List<OrderDto> _orders = new(); 
+    private Table<OrderDto> table;
+    
+    [Inject] public OrderService OrdersService { get; set; }
+    [Inject] TabBlazor.Services.TablerService TablerService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _orders = await GetOrders();
+        
+        await base.OnInitializedAsync();
+    }
+
+    async Task<List<OrderDto>> GetOrders()
+    {
+        return await OrdersService.GetOrders();
+    }
+    
+    private async Task OnItemEdit(OrderDto order)
+    {
+        await TablerService.ShowAlert($"Edited order {order.FIO}");
+    }
+
+    private async Task OnItemAdd(OrderDto order)
+    {
+        await TablerService.ShowAlert($"Added order {order.FIO}");
+    }
+
+    private async Task OnItemDelete(OrderDto order)
+    {
+        await TablerService.ShowAlert($"Order deleted {order.FIO}");
+    }
+
+    private Task<OrderDto> AddItem()
+    {
+        return Task.FromResult(new OrderDto());
+    }
+}

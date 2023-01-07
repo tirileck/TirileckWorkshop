@@ -9,6 +9,7 @@ public static class ServiceRegistrator
         services.AddScoped<WorkshopsService>();
         services.AddScoped<DeviceTypeService>();
         services.AddScoped<OrderService>();
+        services.AddScoped<UsersService>();
 
         services.AddTabler();
     }

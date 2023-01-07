@@ -1,6 +1,8 @@
-﻿namespace TirileckWorkshop.Data.Models;
+﻿using TirileckWorkshop.Data.Models;
 
-public class User
+namespace TirileckWorkshop.Data.Dto;
+
+public class UserDto
 {
     public long Id { get; set; }
 
@@ -18,7 +20,7 @@ public class User
 
     public string Password { get; set; }
 
-    public Workshop? Workshop { get; set; }
+    public Workshop Workshop { get; set; }
     public long? WorkshopId { get; set; }
 
     public ICollection<Role> Roles { get; set; }

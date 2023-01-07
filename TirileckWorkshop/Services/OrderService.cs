@@ -72,4 +72,9 @@ public class OrderService
         else
             return _mapper.Map<TrackingOrderDro>(findedOrder);
     }
+
+    public async Task<List<OrderDto>> GetOrders()
+    {
+        return _mapper.Map<List<OrderDto>>(await _context.Orders.OrderByDescending(x => x.CreateDate).ToListAsync());
+    }
 }

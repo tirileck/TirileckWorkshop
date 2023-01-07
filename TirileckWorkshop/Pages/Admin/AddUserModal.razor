@@ -1,0 +1,63 @@
+﻿@using Tabler.Docs
+@using TirileckWorkshop.Data.Dto
+
+<TablerForm Model="@Model" OnValidSubmit="SubmitForm">
+  <FluentValidationValidator/>
+  <div class="mb-3">
+      <label class="form-label">Фамилия</label>
+      <InputText class="form-control" @bind-Value="Model.LastName"></InputText>
+      <TabValidationMessage For="(() => Model.LastName)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+      <label class="form-label">Имя</label>
+      <InputText class="form-control" @bind-Value="Model.FirstName"></InputText>
+      <TabValidationMessage For="(() => Model.FirstName)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+      <label class="form-label">Отчество</label>
+      <InputText class="form-control" @bind-Value="Model.MiddleName"></InputText>
+      <TabValidationMessage For="(() => Model.MiddleName)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+      <label class="form-label">Должность</label>
+      <InputText class="form-control" @bind-Value="Model.Position"></InputText>
+      <TabValidationMessage For="(() => Model.Position)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+      <label class="form-label">Email</label>
+      <InputText type="email" class="form-control" @bind-Value="Model.Email"></InputText>
+      <TabValidationMessage For="(() => Model.Email)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+      <label class="form-label">Телефон</label>
+      <InputText class="form-control" @bind-Value="Model.PhoneNumber"></InputText>
+      <TabValidationMessage For="(() => Model.PhoneNumber)"></TabValidationMessage>
+  </div>
+  
+  
+  <div class="modal-footer">
+    <a @onclick="Cancel" class="btn btn-link link-secondary" data-dismiss="modal">
+        Отмена
+    </a>
+    <Button Type="ButtonType.Submit" Text="Добавить" class="mt-1"></Button>
+  </div>
+</TablerForm>
+
+
+
+@code {
+    [Inject] IModalService ModalService { get; set; }
+
+    [Parameter] public AddUserDto Model { get; set; }
+
+    private void Cancel()
+    {
+        ModalService.Close(ModalResult.Cancel());
+    }
+  
+    async Task SubmitForm()
+    {
+      ModalService.Close(ModalResult.Ok());
+    }
+
+} 

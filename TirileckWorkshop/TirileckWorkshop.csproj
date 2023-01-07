@@ -21,8 +21,4 @@
       <PackageReference Include="TabBlazor" Version="0.7.12-alpha" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Pages\Admin" />
-    </ItemGroup>
-
 </Project>

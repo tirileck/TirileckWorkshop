@@ -1,0 +1,139 @@
+﻿@page "/adminka/users"
+@using TirileckWorkshop.Services
+@using TirileckWorkshop.Data.Dto
+@layout AdminLayout
+
+<AdminPageHeader Title="Пользователи"/>
+
+
+<Table Item="UserDto" Items="_users" 
+       PageSize="10"
+       @ref="table"
+       AddItemFactory="AddItem"
+       OnItemEdited="@OnItemEdit"
+       Responsive
+       EditMode=tableEditMode 
+       EditPopupMutator=EditPopupOptions
+       OnItemDeleted="OnItemDelete"
+       ConfirmDelete="@true">
+    <HeaderTemplate>
+        <strong>Пользователи</strong>
+        <Button @onclick="ShowModal" 
+                BackgroundColor="TablerColor.Primary"
+                style="height: 20px; margin-left: 5px; font-size: 11px">Добавить</Button>
+    </HeaderTemplate>
+
+    <ChildContent>
+        <Column Item="UserDto" Property="e=>e.FirstName" Title="Имя" Sortable Searchable>
+            <EditorTemplate>
+                <input type="text" class="form-control" @bind-value="@context.FirstName" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="UserDto" Property="e=>e.LastName" Title="Фамилия" Sortable Searchable>
+            <EditorTemplate>
+                <input type="text" class="form-control" @bind-value="@context.LastName" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="UserDto" Property="e=>e.MiddleName" Title="Отчество" Sortable Searchable>
+            <EditorTemplate>
+                <input type="text" class="form-control" @bind-value="@context.MiddleName" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="UserDto" Property="e=>e.Position" Title="Должность" Sortable Searchable Groupable>
+            <EditorTemplate>
+                <input type="text" class="form-control" @bind-value="@context.Position" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="UserDto" Property="e=>e.Email" Title="Email" Sortable Searchable>
+            <EditorTemplate>
+                <input type="email" class="form-control" @bind-value="@context.Email" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="UserDto" Property="e=>e.PhoneNumber" Title="Телефон" Sortable Searchable>
+            <EditorTemplate>
+                <input type="phone" class="form-control" @bind-value="@context.PhoneNumber" />
+            </EditorTemplate>
+        </Column>
+
+        <Column Item="UserDto"  Title="" ActionColumn Width="130px">
+            <Template>
+                    <span @onclick="(() => table.EditItem(context))" @onclick:stopPropagation>
+                        <span class="clickable-text">Изменить</span>
+                    </span>
+                    <span @onclick="(() => table.OnDeleteItem(context))" @onclick:stopPropagation>
+                        <span class="clickable-text">Удалить</span>
+                    </span>
+            </Template>
+            <EditorTemplate>
+                
+            </EditorTemplate>
+        </Column>
+    </ChildContent>
+</Table>
+
+
+@code {
+    List<UserDto> _users = new(); 
+    private Table<UserDto> table;
+    private TableEditMode tableEditMode = TableEditMode.Popup;
+    
+    [Inject] public UsersService UsersService { get; set; }
+    [Inject] TabBlazor.Services.TablerService TablerService { get; set; }
+    [Inject] IModalService ModalService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await GetUsers();
+        
+        base.OnInitializedAsync();
+    }
+    
+    protected async Task ShowModal()
+    {
+        AddUserDto dto = new();
+        var component = new RenderComponent<AddUserModal>().Set<AddUserDto>(e => e.Model, dto);
+        var result = await ModalService.ShowAsync("Добавление пользователя", component, new ModalOptions { Size = ModalSize.Large });
+
+        if (!result.Cancelled)
+        {
+            var addedUser = await UsersService.AddUser(dto);
+            _users = await GetUsers();
+            await table.Refresh();
+        }
+    }
+
+    async Task<List<UserDto>> GetUsers()
+    {
+        return await UsersService.GetUsers();
+    }
+    
+    private async Task OnItemEdit(UserDto user)
+    {
+        await UsersService.EditUser(user);
+        await table.CloseEdit(); 
+    }
+
+    private async Task OnItemDelete(UserDto user)
+    {
+        await UsersService.DeleteUser(user.Id);
+    }
+
+    private Task<UserDto> AddItem()
+    {
+        return Task.FromResult(new UserDto());
+    }
+    
+    //This is optional if you like to control the edit popup.
+    private void EditPopupOptions(TableEditPopupOptions<UserDto> options)
+    {
+        if (options.IsAddInProgress)
+        {
+            options.Title = "Добавление нового юзера";
+        }
+        else
+        {
+            options.Title = $"Изменение юзеоа {options.CurrentEditItem.LastName} {options.CurrentEditItem.FirstName} {options.CurrentEditItem.MiddleName}";
+        }
+        options.ModalOptions.Draggable = true;
+    }
+}

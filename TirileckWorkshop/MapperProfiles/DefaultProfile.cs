@@ -33,7 +33,8 @@ public class DefaultProfile : Profile
         CreateMap<OrderDto, Order>()
             .ForMember(dst => dst.StatusHistory, conf =>
                 conf.MapFrom(src => JsonConvert.SerializeObject(src.StatusHistory)));
-        
 
+        CreateMap<User, UserDto>().ReverseMap();
+        CreateMap<User, AddUserDto>().ReverseMap();
     }
 }
