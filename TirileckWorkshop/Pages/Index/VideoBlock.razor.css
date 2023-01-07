@@ -1,0 +1,21 @@
+﻿.video-block-wrapper{
+    background-color: #440066;
+    
+}
+
+.video-block-header{
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.video-block-header-title{
+    font-size: 45px;
+    color: #f7f21a;
+}
+
+.video-block-body{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
