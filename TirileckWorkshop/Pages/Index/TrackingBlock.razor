@@ -12,7 +12,7 @@
             </div>
             @if (validationStatus is false)
             {
-                <label style="color: red; margin-top:  20px; font-weight: 600; font-size: 18px;">Некорректный трек номер</label>
+                <label style="color: red;">Некорректный трек номер</label>
             }
         </div>
         <div class="tracking-block-body">
@@ -20,7 +20,7 @@
                 {
                     if (_order is null)
                     {
-                        <div style="text-align: center;">По введенному трек номеру не нашлось заказов</div>
+                        <div style="text-align: center;font-weight: 600; font-size: 18px;">По введенному трек номеру не нашлось заказов</div>
                     }
                     else
                     {
@@ -59,9 +59,9 @@
     {
         _formLoading = true;
         validationStatus = true;
-        if (_trackCode.Length == 10 && long.TryParse(_trackCode, out var longCode))
+        if (_trackCode.Trim().Length == 10 && long.TryParse(_trackCode.Trim(), out var longCode))
         {
-            _order = await GetTrackingOrder(_trackCode);
+            _order = await GetTrackingOrder(_trackCode.Trim());
             _isBeforeFind = false;
         }
         else

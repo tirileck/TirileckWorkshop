@@ -1,5 +1,5 @@
 .tracking-block-header{
-    display: flex;
+    flex: 1;
     flex-direction: column;
     flex-wrap: wrap;
 }
@@ -12,5 +12,11 @@
 .tracking-block-component{
     padding: 30px;
     display: flex;
+    flex-direction: column;
     width: 100%;
+}
+
+.tracking-block-body{
+    margin-top:  20px;
+    text-align: center;
 }
