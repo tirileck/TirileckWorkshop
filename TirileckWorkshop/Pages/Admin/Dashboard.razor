@@ -1,8 +1,19 @@
 ﻿@page "/adminka/dashboard"
+@using Tabler.Docs
+@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+@using TirileckWorkshop.Pages.Admin.DashboardComponents
 @layout AdminLayout
 
-<div>Тут будет дашборд</div>
+<AdminPageHeader Title="Дашборд"/>
+
+<SalesChart/>
 
 @code {
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
 }
