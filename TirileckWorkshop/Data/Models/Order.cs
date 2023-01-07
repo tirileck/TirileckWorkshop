@@ -27,7 +27,7 @@ public class Order
 
     public DateTime CreateDate { get; set; }
 
-    public Guid TrackCode { get; set; }
+    public string? TrackCode { get; set; }
 
     public Workshop Workshop { get; set; }
     public long? WorkshopId { get; set; }

@@ -21,7 +21,7 @@ public class TrackingOrderDro
 
     public DateTime CreateDate { get; set; }
 
-    public Guid TrackCode { get; set; }
+    public string? TrackCode { get; set; }
 
     public string WorkshopAddress { get; set; }
 }

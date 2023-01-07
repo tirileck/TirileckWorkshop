@@ -28,7 +28,6 @@ public class OrderService
         storageOrder.CreateDate = DateTime.UtcNow;
         storageOrder.StatusDate = DateTime.UtcNow;
         storageOrder.OrderStatus = OrderStatus.New;
-        storageOrder.TrackCode = Guid.NewGuid();
         storageOrder.DeviceTypeId = order.DeviceType?.Id;
         storageOrder.WorkshopId = order.Workshop?.Id;
         storageOrder.DeviceType = null;
@@ -36,6 +35,9 @@ public class OrderService
         if (storageOrder.DeviceTypeId is not 1)
             storageOrder.DeviceName = null;
         _context.Add(storageOrder);
+        await _context.SaveChangesAsync();
+        storageOrder.TrackCode = GenerateTrackCode(storageOrder.Id);
+        _context.Update(storageOrder);
         await _context.SaveChangesAsync();
         _context.Entry(storageOrder).State = EntityState.Detached;
         var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
@@ -48,7 +50,6 @@ public class OrderService
         storageOrder.CreateDate = DateTime.UtcNow;
         storageOrder.StatusDate = DateTime.UtcNow;
         storageOrder.OrderStatus = OrderStatus.New;
-        storageOrder.TrackCode = Guid.NewGuid();
         storageOrder.DeviceTypeId = order.DeviceType?.Id;
         storageOrder.WorkshopId = order.Workshop?.Id;
         storageOrder.DeviceType = null;
@@ -56,6 +57,9 @@ public class OrderService
         if (storageOrder.DeviceTypeId is not 1)
             storageOrder.DeviceName = null;
         _context.Add(storageOrder);
+        await _context.SaveChangesAsync();
+        storageOrder.TrackCode = GenerateTrackCode(storageOrder.Id);
+        _context.Update(storageOrder);
         await _context.SaveChangesAsync();
         _context.Entry(storageOrder).State = EntityState.Detached;
         var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
@@ -98,7 +102,7 @@ public class OrderService
         return _mapper.Map<OrderDto>(await _context.Orders.Where(x => x.Id == order.Id).SingleAsync());
     }
 
-    public async Task<TrackingOrderDro?> GetTrackedOrder(Guid trackNumber)
+    public async Task<TrackingOrderDro?> GetTrackedOrder(string trackNumber)
     {
         var findedOrder = await _context.Orders
             .Include(x => x.Workshop)
@@ -116,5 +120,19 @@ public class OrderService
             .Include(x => x.Workshop)
             .Include(x => x.DeviceType)
             .OrderByDescending(x => x.CreateDate).ToListAsync());
+    }
+
+    string GenerateTrackCode(long id)
+    {
+        var trackNumberId = id.ToString();
+        var zeroesLength = 10 - trackNumberId.Length;
+        var trackNumber = string.Empty;
+        foreach (var i in Enumerable.Range(0, zeroesLength))
+        {
+            trackNumber += "0";
+        }
+
+        trackNumber += trackNumberId;
+        return trackNumber;
     }
 }

@@ -57,11 +57,9 @@
     {
         _formLoading = true;
         validationStatus = true;
-        Guid number;
-        var parseResult = Guid.TryParse(_trackCode, out number);
-        if (parseResult)
+        if (_trackCode.Length == 10 && long.TryParse(_trackCode, out var longCode))
         {
-            _order = await GetTrackingOrder(number);
+            _order = await GetTrackingOrder(_trackCode);
             _isBeforeFind = false;
         }
         else
@@ -71,7 +69,7 @@
         _formLoading = false;
     }
 
-    async Task<TrackingOrderDro?> GetTrackingOrder(Guid trackNumber)
+    async Task<TrackingOrderDro?> GetTrackingOrder(string trackNumber)
     {
         return await OrderService.GetTrackedOrder(trackNumber);
     }
