@@ -1,22 +1,59 @@
 ﻿@page "/adminka/orders"
 
 @using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Data.Enums
 @using TirileckWorkshop.Services
 @layout AdminLayout
 
 <AdminPageHeader Title="Заказы"/>
 
-<Table Item="OrderDto" Items="_orders" PageSize="10" Hover @ref="table" AddItemFactory="AddItem">
+<Table Item="OrderDto" 
+       Items="_orders" 
+       PageSize="10" 
+       @ref="table" 
+       EditMode="@TableEditMode.Popup"
+       EditPopupMutator="EditPopupOptions"
+       OnItemEdited="OnItemEdit"
+       AddItemFactory="AddItem">
     <HeaderTemplate>
         <strong>Заказы</strong>
+        <Button @onclick="ShowModal" 
+                BackgroundColor="TablerColor.Primary"
+                style="height: 20px; margin-left: 5px; font-size: 11px">Добавить</Button>
     </HeaderTemplate>
 
     <ChildContent>
-        <Column Item="OrderDto" Property="e=>e.FIO" Title="ФИО" Sortable Searchable>
+        <Column Item="OrderDto" Property="e=>e.FIO" Title="ФИО" Searchable>
             <EditorTemplate>
-                <input type="text" class="form-control" @bind-value="@context.FIO" />
+                <input disabled type="text" class="form-control" @bind-value="@context.FIO" />
             </EditorTemplate>
         </Column>
+        <Column Item="OrderDto" Property="e=>e.Email" Title="Email" Searchable>
+            <EditorTemplate>
+                <input disabled type="text" class="form-control" @bind-value="@context.Email" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.PhoneNumber" Title="Телефон" Sortable Searchable>
+            <EditorTemplate>
+                <input disabled type="text" class="form-control" @bind-value="@context.PhoneNumber" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.DeviceType.Name" Title="Тип устройства" Searchable>
+            <EditorTemplate>
+                <input disabled type="text" class="form-control" @bind-value="@context.DeviceType.Name" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.DeviceName" Title="Иной тип устройства" >
+            <EditorTemplate>
+                <input disabled type="text" class="form-control" @bind-value="@context.DeviceName" />
+            </EditorTemplate>
+        </Column>
+        <Column Item="OrderDto" Property="e=>e.OrderStatus" Title="Статус заказа" >
+            <EditorTemplate>
+                <Select Items="EnumHelper.GetList<OrderStatus>()" @bind-SelectedValue="@context.OrderStatus" TextExpression="e=> e.GetName()" ValueExpression="e=> e" />
+            </EditorTemplate>
+        </Column>
+
 
         <Column Item="OrderDto"  Title="" ActionColumn Width="130px">
             <Template>
@@ -25,12 +62,7 @@
                     </span>
             </Template>
             <EditorTemplate>
-                <span @onclick="(() => table.CloseEdit())" @onclick:stopPropagation>
-                    <span class="clickable-text">Сохранить</span>
-                </span>
-                <span @onclick="(() => table.CancelEdit())" @onclick:stopPropagation>
-                    <span class="clickable-text">Отменить</span>
-                </span>
+                
             </EditorTemplate>
         </Column>
     </ChildContent>
@@ -55,6 +87,7 @@
     
     [Inject] public OrderService OrdersService { get; set; }
     [Inject] TabBlazor.Services.TablerService TablerService { get; set; }
+    [Inject] IModalService ModalService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,21 +103,40 @@
     
     private async Task OnItemEdit(OrderDto order)
     {
-        await TablerService.ShowAlert($"Edited order {order.FIO}");
-    }
-
-    private async Task OnItemAdd(OrderDto order)
-    {
-        await TablerService.ShowAlert($"Added order {order.FIO}");
-    }
-
-    private async Task OnItemDelete(OrderDto order)
-    {
-        await TablerService.ShowAlert($"Order deleted {order.FIO}");
+        await OrdersService.EditOrder(order);
     }
 
     private Task<OrderDto> AddItem()
     {
         return Task.FromResult(new OrderDto());
+    }
+    
+    //This is optional if you like to control the edit popup.
+    private void EditPopupOptions(TableEditPopupOptions<OrderDto> options)
+    {
+        if (options.IsAddInProgress)
+        {
+            options.Title = "Добавление нового заказа";
+        }
+        else
+        {
+            options.Title = $"Изменение заказа пользователя {options.CurrentEditItem.FIO}";
+        }
+        options.ModalOptions.Draggable = true;
+    }
+    
+    
+    protected async Task ShowModal()
+    {
+        AddOrderDto dto = new();
+        var component = new RenderComponent<AddOrderModal>().Set<AddOrderDto>(e => e.Model, dto);
+        var result = await ModalService.ShowAsync("Добавление заказа", component, new ModalOptions { Size = ModalSize.Large });
+
+        if (!result.Cancelled)
+        {
+            var addedUser = await OrdersService.AddOrder(dto);
+            _orders = await GetOrders();
+            await table.Refresh();
+        }
     }
 }

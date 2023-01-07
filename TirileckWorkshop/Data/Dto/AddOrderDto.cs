@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace TirileckWorkshop.Data.Dto;
 
-public class AddOrderShortDto
+public class AddOrderDto
 {
     public string FIO { get; set; }
 
@@ -21,11 +19,11 @@ public class AddOrderShortDto
     public WorkshopDto? Workshop { get; set; }
 }
 
-public static class AddOrderShortDtoExtensions
+public static class AddOrderDtoExtensions
 {
-    public class AddOrderShortStoValidator : AbstractValidator<AddOrderShortDto>
+    public class AddOrderShortDtoValidator : AbstractValidator<AddOrderDto>
     {
-        public AddOrderShortStoValidator()
+        public AddOrderShortDtoValidator()
         {
             RuleFor(x => x.FIO)
                 .NotEmpty()

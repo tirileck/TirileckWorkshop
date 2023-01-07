@@ -22,6 +22,26 @@ public class OrderService
         _mapper = mapper;
     }
 
+    public async Task<OrderDto> AddOrder(AddOrderDto order)
+    {
+        var storageOrder = _mapper.Map<Order>(order);
+        storageOrder.CreateDate = DateTime.UtcNow;
+        storageOrder.StatusDate = DateTime.UtcNow;
+        storageOrder.OrderStatus = OrderStatus.New;
+        storageOrder.TrackCode = Guid.NewGuid();
+        storageOrder.DeviceTypeId = order.DeviceType?.Id;
+        storageOrder.WorkshopId = order.Workshop?.Id;
+        storageOrder.DeviceType = null;
+        storageOrder.Workshop = null;
+        if (storageOrder.DeviceTypeId is not 1)
+            storageOrder.DeviceName = null;
+        _context.Add(storageOrder);
+        await _context.SaveChangesAsync();
+        _context.Entry(storageOrder).State = EntityState.Detached;
+        var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
+        return orderDtoWithStatus;
+    }
+
     public async Task<OrderDto> AddOrder(AddOrderShortDto order)
     {
         var storageOrder = _mapper.Map<Order>(order);
@@ -60,6 +80,21 @@ public class OrderService
         await _context.SaveChangesAsync();
         return _mapper.Map<OrderDto>(order);
     }
+    
+    public async Task<OrderDto> EditOrder(OrderDto order)
+    {
+        var storageOrder = await _context.Orders.Where(x => x.Id == order.Id).SingleAsync();
+        storageOrder.WorkshopId = order.Workshop.Id;
+        _context.Update(storageOrder);
+        await _context.SaveChangesAsync();
+        _context.Entry(storageOrder).State = EntityState.Detached;
+        if (order.OrderStatus != storageOrder.OrderStatus)
+        {
+            await AddOrderStatus(order.Id, order.OrderStatus);
+        }
+
+        return _mapper.Map<OrderDto>(await _context.Orders.Where(x => x.Id == order.Id).SingleAsync());
+    }
 
     public async Task<TrackingOrderDro?> GetTrackedOrder(Guid trackNumber)
     {
@@ -75,6 +110,9 @@ public class OrderService
 
     public async Task<List<OrderDto>> GetOrders()
     {
-        return _mapper.Map<List<OrderDto>>(await _context.Orders.OrderByDescending(x => x.CreateDate).ToListAsync());
+        return _mapper.Map<List<OrderDto>>(await _context.Orders
+            .Include(x => x.Workshop)
+            .Include(x => x.DeviceType)
+            .OrderByDescending(x => x.CreateDate).ToListAsync());
     }
 }

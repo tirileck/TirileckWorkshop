@@ -1,0 +1,117 @@
+﻿@using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+<TablerForm Model="@Model" OnValidSubmit="SubmitForm">
+  <FluentValidationValidator/>
+  <div class="mb-3">
+    <label class="form-label">ФИО</label>
+    <InputText class="form-control" @bind-Value="Model.FIO"></InputText>
+    <TabValidationMessage For="(() => Model.FIO)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">E-mail</label>
+    <InputText type="email" class="form-control" @bind-Value="Model.Email"></InputText>
+    <TabValidationMessage For="(() => Model.Email)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Номер телефона</label>
+    <InputText type="phone" class="form-control" @bind-Value="Model.PhoneNumber"></InputText>
+    <TabValidationMessage For="(() => Model.PhoneNumber)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Предприятие</label>
+    <ItemSelect TItem="WorkshopDto"
+                TValue="WorkshopDto"
+                Items="_workshops"
+                SelectedTextExpression="e => e.Address"
+                @bind-SelectedValue="Model.Workshop"
+                Clearable="true"
+                NoSelectedText="Выберите предприятие"
+                SearchMethod="SearchWorkshop"
+                SearchPlaceholderText="Поиск">
+      <ListTemplate>
+        @context.Address
+      </ListTemplate>
+    </ItemSelect>
+    <TabValidationMessage For="(() => Model.Workshop)"></TabValidationMessage>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Тип устройства</label>
+    <ItemSelect TItem="DeviceTypeDto"
+                TValue="DeviceTypeDto"
+                Items="_deviceTypes"
+                SelectedTextExpression="e => e.Name"
+                @bind-SelectedValue="Model.DeviceType"
+                Clearable="true"
+                NoSelectedText="Выберите тип девайса">
+      <ListTemplate>
+        @context.Name
+      </ListTemplate>
+    </ItemSelect>
+    <TabValidationMessage For="(() => Model.DeviceType)"></TabValidationMessage>
+  </div>
+  @if (Model.DeviceType is {Id: 1})
+  {
+    <div class="mb-3">
+      <label class="form-label">Свой тип</label>
+      <InputText class="form-control" @bind-Value="Model.DeviceName"></InputText>
+      <TabValidationMessage For="(() => Model.DeviceName)"></TabValidationMessage>
+    </div>
+  }
+  <div class="mb-3">
+    <label class="form-label">Описание проблемы</label>
+    <InputText class="form-control" @bind-Value="Model.Description"></InputText>
+    <TabValidationMessage For="(() => Model.Description)"></TabValidationMessage>
+  </div>
+
+  <div class="modal-footer">
+    <a @onclick="Cancel" class="btn btn-link link-secondary" data-dismiss="modal">
+        Отмена
+    </a>
+    <Button Type="ButtonType.Submit" Text="Добавить" class="mt-1"></Button>
+  </div>
+</TablerForm>
+
+@code {
+  List<WorkshopDto> _workshops = new();
+  List<DeviceTypeDto> _deviceTypes = new();
+  
+  [Inject] public WorkshopsService WorkshopsService { get; set; } 
+  [Inject] public DeviceTypeService DeviceTypeService { get; set; } 
+  [Inject] public OrderService OrderService { get; set; }
+  [Inject] IModalService ModalService { get; set; }
+
+  [Parameter] public AddOrderDto Model { get; set; }
+  
+  protected override async Task OnInitializedAsync()
+  {
+    _workshops = await GetWorkshops();
+    _deviceTypes = await GetDeviceTypes();
+    
+    await base.OnInitializedAsync();
+  }
+
+  async Task<List<WorkshopDto>> GetWorkshops()
+  {
+    return await WorkshopsService.GetWorkshops();
+  }
+
+  async Task<List<DeviceTypeDto>> GetDeviceTypes()
+  {
+    return await DeviceTypeService.GetDeviceTypes();
+  }
+
+  private void Cancel()
+  {
+      ModalService.Close(ModalResult.Cancel());
+  }
+
+  async Task SubmitForm()
+  {
+      ModalService.Close(ModalResult.Ok());
+  }
+  
+  private List<WorkshopDto> SearchWorkshop(string arg)
+  {
+    return (string.IsNullOrEmpty(arg) ? _workshops.ToList() : _workshops.Where(x => x.Address.Contains(arg, StringComparison.InvariantCultureIgnoreCase)).ToList());
+  }
+}

@@ -93,12 +93,10 @@
   AddOrderShortDto _model = new();
   List<WorkshopDto> _workshops = new();
   List<DeviceTypeDto> _deviceTypes = new();
-  WorkshopDto _selectedWorkshop;
 
   [Inject] public WorkshopsService WorkshopsService { get; set; } 
   [Inject] public DeviceTypeService DeviceTypeService { get; set; } 
   [Inject] public OrderService OrderService { get; set; } 
-  [Inject] public AddOrderShortDtoExtensions.AddOrderShortStoValidator Validator { get; set; } 
 
   protected override async Task OnInitializedAsync()
   {
