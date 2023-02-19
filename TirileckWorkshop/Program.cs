@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TirileckWorkshop.Data;
 using TirileckWorkshop.Data.Dto;
 using TirileckWorkshop.MapperProfiles;
@@ -15,6 +16,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<EmailConfig>(new EmailConfig()
+{
+    SmtpAdress = builder.Configuration["EmailConfiguration:SmtpAdress"],
+    SmptPort = int.Parse(builder.Configuration["EmailConfiguration:SmptPort"]),
+    Login = builder.Configuration["EmailConfiguration:Login"],
+    Password = builder.Configuration["EmailConfiguration:Password"],
+});
 ValidatorsRegistrator.Register(builder.Services);
 ServiceRegistrator.Register(builder.Services);
 MapperRegistrator.Register(builder.Services);

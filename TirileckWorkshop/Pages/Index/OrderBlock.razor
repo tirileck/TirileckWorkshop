@@ -6,11 +6,11 @@
   <div class="order-block-header">
     @if (isSended == false)
     {
-      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Здесь вы можете оставить заявку на ремонт</div>
+      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;font-weight: 600;">Здесь вы можете оставить заявку на ремонт</div>
     }
     else
     {
-      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Спасибо за оставленную заявку. Мы вам перезвоним:)</div>
+      <div style="text-align: center; font-size: 22px; margin-bottom: 7px;font-weight: 600;">Спасибо за оставленную заявку. Мы вам перезвоним:)</div>
       <div style="color: green; display: flex; justify-content: center; margin-top: 50px; margin-bottom: 30px; scale: 10" >
         <i class="fa fa-check" aria-hidden="true"></i>
       </div>
@@ -96,7 +96,9 @@
       List<WorkshopDto> _workshops = new();
       List<DeviceTypeDto> _deviceTypes = new();
       bool isSended = false;
-    
+  
+      [Parameter] public EventCallback OnOrderCreate { get; set; }
+
       [Inject] public IModalService ModalService { get; set; }
       [Inject] public WorkshopsService WorkshopsService { get; set; } 
       [Inject] public DeviceTypeService DeviceTypeService { get; set; } 
@@ -138,6 +140,7 @@
         });
         isSended = true;
         formLoading = false;
+        await OnOrderCreate.InvokeAsync();
       }
     
       async Task SubmitForm()

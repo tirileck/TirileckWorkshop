@@ -1,0 +1,541 @@
+﻿@page "/"
+@using TirileckWorkshop.Pages.Index
+
+@layout LandingLayout
+	
+<!--	Logo and menu
+****************************-->
+	<header class="header">
+		<div class="inner-header container">
+			<div class="header__logo">
+				<a href="index.html" class="logo__item" style="width: 70px; height: 70px"></a>
+			</div>
+			
+			<button class="btn_nav"><i class="icon-menu"></i></button>
+
+			<nav class="navigation header__nav">
+				<ul class="nav__list">
+					<li class="nav__item current"><a href="#tracking" class="nav__link"><span class="nav__item_underline"></span>Отследить</a></li>
+					<li class="nav__item"><a href="#about" class="nav__link"><span class="nav__item_underline"></span>О нас</a></li>
+					<li class="nav__item"><a href="#services" class="nav__link"><span class="nav__item_underline"></span>Услуги</a></li>
+					<li class="nav__item"><a href="#works" class="nav__link"><span class="nav__item_underline"></span>Галерея</a></li>
+					<li class="nav__item"><a href="#clients" class="nav__link"><span class="nav__item_underline"></span>Отзывы</a></li>
+					<li class="nav__item"><a href="#contact" class="nav__link"><span class="nav__item_underline"></span>Контакты</a></li>
+					<li class="nav__item"><a href="#order" class="nav__link"><span class="nav__item_underline"></span>Оставить заявку</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	
+<!--	Slider set
+*****************************-->
+<!-- slider container -->
+	<div class="slider section">
+	<!-- slider item -->
+		<div class="slider__item slider__item_1">
+			<div class="container">
+				<div class="slider__wrapper">
+					<span class="item__text">Чиним технику для вас с 2020 года</span>
+					<h1 class="item__text item__text_big">Мы - команда профессионалов, знающих свое дело. Доступный и качественный сервис по ремонту цифровой техники в Калуге!</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+<section id="tracking">
+	<div class="tracking-block-wrapper">
+		<DefaultContainer>
+			<div class="tracking-block">
+				<TrackingBlock/>
+			</div>
+		</DefaultContainer>
+	</div>
+</section>
+	
+<!--	Section About
+*****************************-->
+	<section id="about" class="about section">
+		<div class="container">
+			<div class="row">
+				<div class="about__text col-xs-12 col-md-6">
+					<h2 class="text__header">О нас</h2>
+					<p class="text__par">Нас сервис предоставляет самый качественный ремон цифровой техники в г. Калуга. Мы любых устройсв разной сложности в кратчайшее время по доступной цене.</p>
+					<a href="#works" rel="nofollow" class="text__button">Посмотреть наши работы</a>
+				</div>
+				<div class="about__right-column col-xs-12 col-md-6"></div>
+			</div>
+		</div>
+	</section>
+	
+<!--	Section with video
+*****************************-->
+	<section class="video">
+		<iframe class="video__item" src="https://player.vimeo.com/video/800131786?	color=ffffff&title=0&byline=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+		
+<!-- foreground video poster -->
+		<div class="video__item video__item_poster">
+			<button class="poster__play-button">
+				<span class="play-outline"></span>
+			</button>
+		</div>
+	</section>
+	
+<!--	Services
+*****************************-->
+	<section id="services" class="services section">
+		<div class="container">
+			<div class="services__header-block">
+				
+				<h2 class="services__header col-xs-12 col-sm-6">Улуги</h2>
+					
+				<div class="arrow-controls col-xs-12 col-sm-6">
+					
+			<!-- arrows -->
+					<div class="arrow arrow_back">
+						<div class="arrow__line-short arrow__line_up"></div>
+						<div class="arrow__line"></div>
+						<div class="arrow__line-short arrow__line_down"></div>
+					</div>
+						
+					<div class="arrow arrow_front">
+						<div class="arrow__line-short arrow__line_up"></div>
+						<div class="arrow__line"></div>
+						<div class="arrow__line-short arrow__line_down"></div>
+					</div>
+						
+				</div>
+			</div>
+			<hr class="services__line">
+
+<!-- carousel container			 -->
+			<div class="owl-carousel owl-theme">
+				<div class="item">
+					<div class="services__item">
+						<h3>Смарфоны</h3>
+						<p class="services__item__text">Ремонт любой сложности вашего смартфона, используя оригинальные компоненты.</p>
+						<ul class="services__list">
+							<li>Перепрошивка устройства</li>
+							<li>Замена модулей</li>
+							<li>Бесплатная диагностика</li>
+						</ul>
+					</div>
+				</div>
+				<div class="item">
+					<div class="services__item">
+						<h3>Компьютеры</h3>
+						<p class="services__item__text">Широкий спектр услуг по ремонту и обслуживанию вашего устройства.</p>
+						<ul class="services__list">
+							<li>Переустановка системы</li>
+							<li>Замена комплектующих</li>
+							<li>Бесплатная диагностика</li>
+						</ul>
+					</div>
+				</div>
+				<div class="item">
+					<div class="services__item">
+						<h3>Ноутбуки</h3>
+						<p class="services__item__text">Прокачиваем ноутбуки как никогда прежде.</p>
+						<ul class="services__list">
+							<li>Переустановка системы</li>
+							<li>Апгрейд комплектующих</li>
+							<li>Бесплатная диагностика</li>
+						</ul>
+					</div>
+				</div>
+				<div class="item">
+					<div class="services__item">
+						<h3>Телевизоры</h3>
+						<p class="services__item__text">Подарим вашему телевизору вторую жизнь</p>
+						<ul class="services__list">
+							<li>Настройка и коррекция изображения</li>
+							<li>Ремонт комплектующих</li>
+							<li>Бесплатная диагностика</li>
+						</ul>
+					</div>
+				</div>
+				<div class="item">
+					<div class="services__item">
+						<h3>Принтеры</h3>
+						<p class="services__item__text">Сделаем ваш принтер невероятно четким.</p>
+						<ul class="services__list">
+							<li>Ремонт принтеров любых типов</li>
+							<li>Заправка картриджей</li>
+							<li>Бесплатная диагностика</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+<!--	Works gallery
+*********************************-->
+	<section id="works" class="works section">
+		<div class="container">
+			<div class="row">
+			<!-- header and buttons of the gallery -->
+				<div class="works__header">
+					<h2 class="col-xs-12 col-sm-3">Галерея</h2>
+					<nav class="works__header__nav col-xs-12 col-sm-9">
+						<button data-filter="*" class="works__nav__item works__nav__item_active"><span class="works__button_underline"></span>Все</button>
+						<button data-filter=".works" class="works__nav__item"><span class="works__button_underline"></span>За работой</button>
+						<button data-filter=".stuff" class="works__nav__item"><span class="works__button_underline"></span>Сотрудники</button>
+						<button data-filter=".places" class="works__nav__item"><span class="works__button_underline"></span>Офисы</button>
+					</nav>
+				</div>
+			</div>
+
+		<div class="gallery">
+			<!-- gallery container -->
+			<div class="gallery__items">
+
+				<!-- gallery item -->
+				<div class="gallery__item gallery__item_1 col-xs-12 col-sm-6 works">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Работы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">За работой</a></h3>
+						<h4 class="item__hover__header-small">Замена аккумулятора</h4>
+							
+						<a href="images/gallery/work1.webp" rel="nofollow" class="item__hover__zoom" title="Замена аккумулятора">
+							<img src="images/gallery/work1.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+					</div>
+				</div>
+
+				<!-- gallery item -->	
+				<div class="gallery__item gallery__item_2 col-xs-12 col-sm-6 places">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Офисы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">Офис на Воронина 9</a></h3>
+						<h4 class="item__hover__header-small">Тут мы творим магию</h4>
+							
+						<a href="images/gallery/places1.webp" rel="nofollow" class="item__hover__zoom" title="Офис на Воронина 9">
+							<img src="images/gallery/places1.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+
+					</div>
+				</div>
+
+				<!-- gallery item -->	
+				<div class="gallery__item gallery__item_2 col-xs-12 col-sm-6 stuff">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Сотрудники</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">Наши сотрудники</a></h3>
+						<h4 class="item__hover__header-small">Сашка тирилек занят своим делом</h4>
+							
+						<a href="images/gallery/stuff1.webp" rel="nofollow" class="item__hover__zoom" title="Сашка тирилек занят своим делом">
+							<img src="images/gallery/stuff1.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+
+					</div>
+				</div>
+
+				<!-- gallery item -->
+				<div class="gallery__item gallery__item_1 col-xs-12 col-sm-6 works">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Работы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">За работой</a></h3>
+						<h4 class="item__hover__header-small">Замена дисплея: до и после</h4>
+							
+						<a href="images/gallery/work2.webp" rel="nofollow" class="item__hover__zoom" title="Замена дисплея: до и после">
+							<img src="images/gallery/work2.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+					</div>
+				</div>
+
+				<!-- gallery item -->	
+				<div class="gallery__item gallery__item_2 col-xs-12 col-sm-6 places">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Офисы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">Офис на Воронина 9</a></h3>
+						<h4 class="item__hover__header-small">За этой дверью происходят чудеса</h4>
+							
+						<a href="images/gallery/places2.webp" rel="nofollow" class="item__hover__zoom" title="Офис на Воронина 9">
+							<img src="images/gallery/places2.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+
+					</div>
+				</div>
+
+				<!-- gallery item -->
+				<div class="gallery__item gallery__item_1 col-xs-12 col-sm-6 works">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Работы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">За работой</a></h3>
+						<h4 class="item__hover__header-small">Переборка телефона</h4>
+							
+						<a href="images/gallery/work3.webp" rel="nofollow" class="item__hover__zoom" title="Переборка телефона">
+							<img src="images/gallery/work3.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+					</div>
+				</div>
+
+				<!-- gallery item -->	
+				<div class="gallery__item gallery__item_2 col-xs-12 col-sm-6 places">
+					<div class="gallery__item__hover">
+						<span class="item__hover__line"></span><span class="item__hover__tag">Офисы</span>
+							
+						<h3 class="item__hover__header"><a href="javascript:void">Офис на Воронина 9</a></h3>
+						<h4 class="item__hover__header-small">Наш Хогвартс</h4>
+							
+						<a href="images/gallery/places3.webp" rel="nofollow" class="item__hover__zoom" title="Офис на Воронина 9">
+							<img src="images/gallery/places3.webp" alt>
+							+&nbsp;Увеличить
+						</a>
+
+					</div>
+				</div>
+				
+		</div>
+				<!-- button load more	 -->
+				<button class="gallery__button">
+					<div class="preloader" hidden>
+						<img class="preloader__inside" src="images/icons/preloader.gif" alt>
+					</div>
+					<span class="button-text">Загрузить еще</span>
+				</button>
+			</div>
+		</div>
+	</section>
+	
+	<!-- clients and contacts section -->
+	<section class="clients-and-contacts section">
+		<section id="clients" class="clients">
+			<div class="container">
+				<div class="clients__header row">
+					<h2 class="col-xs-12 col-md-9">Клиенты говорят</h2>
+
+					<!-- clients controls -->
+					<div class="clients__controls col-xs-12 col-md-3">
+						<div class="clients__arrow clients__arrow_back">
+
+							<div class="clients__arrow__line-short clients__arrow__line-up"></div>
+							<div class="clients__arrow__line"></div>
+							<div class="clients__arrow__line-short clients__arrow__line-down"></div>
+
+						</div>
+
+						<!-- clients counter -->
+						<div class="clients__counter">&nbsp;<span class="clients__counter__item clients__counter__item1">1&nbsp;</span> / <span class="clients__counter__item clients__counter__item2">&nbsp;4</span>&nbsp;</div>
+
+						<div class="clients__arrow clients__arrow_next">
+
+							<div class="clients__arrow__line-short clients__arrow__line-up"></div>
+							<div class="clients__arrow__line"></div>
+							<div class="clients__arrow__line-short clients__arrow__line-down"></div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- clients carousel container -->
+				<div id="clients" class="clients__comment section">
+					<div class="owl-carousel owl-theme">
+						<div class="item">
+							<div class="clients__comment__item">
+								<div class="comment__customer col-xs-12 col-md-4">
+									<h3>Максим К.</h3>
+									<h4 class="comment__customer__prefession">Клиент</h4>
+								</div>
+
+								<blockquote class="comment__text col-xs-12 col-md-8">
+									Обращался 2 раза
+                                    Первый, разбил телефон редми 9 упал с крыши гаража разбился экран, искал мастеров у всех на заказ, ждать неделю, случайно проезжал по улице увидел вывеску, зашёл всё в наличии через 2 часа с телефоном, отлично.
+                                    Второй раз обратился через 2 месяца, тот же самый телефон раздавил машиной, экран камеры и что-то ещё раздавилось, но ещё работал кое как , привёз опять, сделали за сутки, сотворили чудо и очень не дорого, доволен( как с родными повидался) ), очень хорошее отношение к своим клиентам,желаю успеха и процветания. Спасибо🙏.
+								</blockquote>
+							</div>
+						</div>
+						<div class="item">
+							<div class="clients__comment__item">
+								<div class="comment__customer col-xs-12 col-md-4">
+									<h3>Андрей П.</h3>
+									<h4 class="comment__customer__prefession">Клиент</h4>
+								</div>
+
+								<blockquote class="comment__text col-xs-12 col-md-8">
+									Отличный специалист, всё быстро собрал, установил ОС и нужные программы, на все вопросы по поводу компьютера отвечает подробно и доступно .Рекомендую другим пользователям ,самый лучший сервис в городе Калуга
+								</blockquote>
+							</div>
+						</div>
+						<div class="item">
+							<div class="clients__comment__item">
+								<div class="comment__customer col-xs-12 col-md-4">
+									<h3>Дима Н.</h3>
+									<h4 class="comment__customer__prefession">Клиент</h4>
+								</div>
+
+								<blockquote class="comment__text col-xs-12 col-md-8">
+									Отличный сервис. Была проблема в серверной сборке с Алика, нормально комплект не запускался, сколько сам не тыкался проблему выявить не смог. Здесь помогли найти проблему быстро и причем за диагностику не взяли денег! Спасибо вам!
+								</blockquote>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!--	Contact us
+	*********************************-->
+		<div class="map col-xs-12 col-sm-6"></div>
+	
+		<footer class="contact container">
+			<div class="row">
+				<div class="contact__inf col-xs-12 col-sm-6">
+					<h2 id="contact" class="section">Свяжитесь с нами</h2>
+
+					<p class="contact__text">
+						Напишите нам на почту<br>
+						<a class="contact__email" href="mailto:remontt40@mail.ru">remontt40@mail.ru</a>
+					</p>
+
+					<address class="contact__address">
+						Россия, г.Калуга, ул. Воронина д.9<br>
+						<a class="contact__tel" href="tel:+79621755437">+7 962 175 54 37</a>
+					</address>
+
+			<!-- social networks -->
+					<div class="social">
+						<div class="social__link-and-icon">
+							<span class="fa fa-vk"></span><a class="social__link" href="https://vk.com/public213701323">Vk<span class="social__link_underline"></span></a>
+							
+						</div>
+						<div class="social__link-and-icon">
+							<span class="fa fa-whatsapp"></span><a class="social__link" href="https://wa.me/79621753755">Whatsapp<span class="social__link_underline"></span></a>
+							
+						</div>
+						<div class="social__link-and-icon">
+							<span class="fa fa-map-marker"></span><a class="social__link" href="https://yandex.ru/maps/org/kompyuterny_remont_i_uslugi/193667136744/?ll=36.260431%2C54.519115&z=15">Яндекс карты<span class="social__link_underline"></span></a>
+							
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</footer>
+		
+<section id="order">
+	<div class="order-block-wrapper">
+	    <DefaultContainer>
+	        <div class="order-block">
+		        <OrderBlock
+					OnOrderCreate="OrderCreated"
+			        />
+	        </div>
+	    </DefaultContainer>
+	</div>
+</section>
+
+		
+		<!--	clients logos
+	*********************************-->
+		<section class="clients-logos container" style="top: @(_orderCreated ? "40%" : "30%")">
+			<div class="clients-logos__wrapper">
+				<img class="clients-logos__image" src="images/icons/apple.png" alt="Apple">
+				<img class="clients-logos__image" src="images/icons/samsung.png" alt="Samsung">
+				<img class="clients-logos__image" src="images/icons/huawei.png" alt="Huawei">
+			
+				<img class="clients-logos__image" src="images/icons/xiaomi.png" alt="Xiaomi">
+				<img class="clients-logos__image" src="images/icons/asus.png" alt="Asus">
+				<img class="clients-logos__image" src="images/icons/lenovo.png" alt="Lenovo">
+			</div>
+		</section>
+	</section>
+	
+    <!-- google map -->
+    	<script suppress-error="BL9992" async defer src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjYhHbI6v_VpjiLZC0R4j5lHkTzMhuhys&callback=initMap">
+    	</script>
+    	<!-- castomisation if the map -->
+    	<script suppress-error="BL9992" src="js/map.js"></script>
+    	<!-- menu -->
+    	<script suppress-error="BL9992" src="js/menu.js"></script>
+    	<!-- castom js script -->
+    	<script suppress-error="BL9992" src="js/main.js"></script>
+    	<!-- vimeo player api -->
+    	<script suppress-error="BL9992" src="https://player.vimeo.com/api/player.js"></script>
+    	<!-- load more function -->
+    	<script suppress-error="BL9992" src="js/load_more.js"></script>
+	
+    <!-- vimeo player options -->
+    <script suppress-error="BL9992">
+    	var iframe = document.querySelector('.slider__item_video');
+        var player = new Vimeo.Player(iframe);
+
+        //When the player is ready, set the volume to 0
+        player.ready().then(function() {
+            player.setVolume(0);
+        });
+    </script>
+	
+	<!-- load more settings -->
+<script suppress-error="BL9992">
+        items_set = [
+            {
+             filter: 'works',
+             backgroundImage: 'images/gallery/work1.webp',
+             tagName: 'Работы',
+             headingHref: 'javascript:void',
+             heading: 'Замена аккумулятора',
+             headingSmall: 'За работой',
+             img: 'images/magnificpopup/redstrip.jpg',
+             title: 'Замена аккумулятора'
+         	},
+         	{
+         	 filter: 'identy',
+             backgroundImage: 'images/photos/cookie.jpg',
+             tagName: 'Identy',
+             headingHref: 'javascript:void',
+             heading: 'Cookie and Coffee',
+             headingSmall: 'Take a break',
+             img: 'images/magnificpopup/cookie.jpg',
+             title: 'Coffee Web Site'
+         	},
+         	{
+             filter: 'web',
+             backgroundImage: 'images/photos/essentials.jpg',
+             tagName: 'Web Design',
+             headingHref: 'javascript:void',
+             heading: 'Magazines',
+             headingSmall: 'Nice reading',
+             img: 'images/magnificpopup/essentials.jpg',
+             title: 'Coffee Web Site'
+         	},
+         	{
+         	 filter: 'identy',
+             backgroundImage: 'images/photos/softs.jpg',
+             tagName: 'Identy',
+             headingHref: 'javascript:void',
+             heading: 'Sheets of paper',
+             headingSmall: 'Getting correct information',
+             img: 'images/magnificpopup/softs.jpg',
+             title: 'Coffee Web Site'
+         	},
+        ];
+
+        $('.gallery__items').portfolio_addon({
+            load_count : 2,
+            items : items_set
+        });
+    </script>
+    
+@code
+{
+	bool _orderCreated = false;
+
+	async Task OrderCreated()
+	{
+		_orderCreated = true;
+	}
+}

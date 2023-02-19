@@ -12,14 +12,17 @@ public class OrderService
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly EmailService _emailService;
     
     public OrderService(
         ApplicationDbContext context,
-        IMapper mapper
+        IMapper mapper,
+        EmailService emailService
     )
     {
         _context = context;
         _mapper = mapper;
+        _emailService = emailService;
     }
 
     public async Task<OrderDto> AddOrder(AddOrderDto order)
@@ -41,6 +44,11 @@ public class OrderService
         await _context.SaveChangesAsync();
         _context.Entry(storageOrder).State = EntityState.Detached;
         var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
+
+        if (!string.IsNullOrEmpty(storageOrder.Email))
+            await _emailService.SendEmailAsync(storageOrder.Email, "Ремонт",
+                $"{storageOrder.FIO}! Ваш заказ создан!\n Трек номер для отслеживания: {storageOrder.TrackCode}");
+        
         return orderDtoWithStatus;
     }
 
@@ -63,6 +71,11 @@ public class OrderService
         await _context.SaveChangesAsync();
         _context.Entry(storageOrder).State = EntityState.Detached;
         var orderDtoWithStatus = await AddOrderStatus(storageOrder.Id, OrderStatus.New);
+        
+        if (!string.IsNullOrEmpty(storageOrder.Email))
+            await _emailService.SendEmailAsync(storageOrder.Email, "Ремонт",
+                $"{storageOrder.FIO}! Ваш заказ создан!\n Трек номер для отслеживания: {storageOrder.TrackCode}");
+        
         return orderDtoWithStatus;
     }
 
@@ -97,6 +110,9 @@ public class OrderService
         if (order.OrderStatus != storageOrder.OrderStatus)
         {
             await AddOrderStatus(order.Id, order.OrderStatus);
+            if (!string.IsNullOrEmpty(storageOrder.Email))
+                await _emailService.SendEmailAsync(storageOrder.Email, "Ремонт",
+                    $"{storageOrder.FIO}! У вашего заказа изменился статус!\nНовый статус: {order.OrderStatus.GetName()}");
         }
 
         return _mapper.Map<OrderDto>(await _context.Orders.Where(x => x.Id == order.Id).SingleAsync());

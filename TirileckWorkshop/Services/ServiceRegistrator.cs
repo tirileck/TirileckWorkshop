@@ -10,6 +10,7 @@ public static class ServiceRegistrator
         services.AddScoped<DeviceTypeService>();
         services.AddScoped<OrderService>();
         services.AddScoped<UsersService>();
+        services.AddScoped<EmailService>();
 
         services.AddTabler();
     }

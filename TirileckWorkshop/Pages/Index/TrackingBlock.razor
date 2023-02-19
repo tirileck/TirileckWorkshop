@@ -5,7 +5,7 @@
 <Dimmer>
     <div class="tracking-block-component">
         <div class="tracking-block-header">
-            <div style="text-align: center; font-size: 22px; margin-bottom: 7px;">Статус вашего заказа по трек номеру</div>
+            <div style="text-align: center; font-size: 22px; margin-bottom: 7px;font-weight: 600">Статус вашего заказа по трек номеру</div>
             <div class="tracking-block-searchbox">
                 <InputText @bind-Value="_trackCode" class="@(validationStatus is false ? "invalid form-control" : "valid form-control")"/>
                 <Button BackgroundColor="TablerColor.Primary" Type="ButtonType.Button" Text="Найти" OnClick="@Find" style="margin-left: 5px;"/>
