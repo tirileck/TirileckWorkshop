@@ -1471,6 +1471,8 @@ ul, ol {
 	
 	.slider__item{
 		padding-top: 100px;
+		min-height: auto;
+		height: 500px;
 	}
 
 	.arrow-controls{
@@ -1512,6 +1514,19 @@ ul, ol {
 	.mfp-bottom-bar{
 		left: -223px;
 	}
+	
+	
+	.slider__wrapper{
+		bottom: auto;
+		top: 30%;
+	}
+
+
+	.slider{
+		height: 500px;
+		min-height: auto;
+	}
+
 }
 
 
@@ -1519,6 +1534,8 @@ ul, ol {
 	
 	.slider__item{
 		padding-top: 200px;
+		min-height: auto;
+		height: 500px;
 	}
 
 	.slider__item_video{
@@ -1581,5 +1598,10 @@ ul, ol {
 
 	.mfp-bottom-bar{
 		left: -198px;
+	}
+	
+	.slider{
+		height: 500px;
+		min-height: auto;
 	}
 }
