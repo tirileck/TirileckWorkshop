@@ -48,9 +48,9 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Workshop)
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.WorkshopId);
-        modelBuilder.Entity<Order>()
-            .Property(b => b.StatusHistory)
-            .HasColumnType("jsonb");
+        //modelBuilder.Entity<Order>()
+        //    .Property(b => b.StatusHistory)
+        //    .HasColumnType("jsonb");
         
         modelBuilder.Entity<User>()
             .HasOne(x => x.Workshop)
