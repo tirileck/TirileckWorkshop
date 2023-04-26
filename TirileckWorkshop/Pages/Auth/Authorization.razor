@@ -1,39 +1,70 @@
 ﻿@page "/adminka/auth"
 @using TirileckWorkshop.Data.Dto
+@using TirileckWorkshop.Services
+@using TirileckWorkshop.Authentication
+
 @layout AuthLayout
 
 <div class="auth-wrapper">
     <div class="auth-content">
-        <div class="auth-form">
-              <div class="auth-form-header">
-                Авторизация
-              </div>
-              <div class="auth-form-body">
-                <TablerForm Model="@_model" OnValidSubmit="SubmitForm">
-                  <FluentValidationValidator/>
-                  <div class="mb-1">
-                    <label class="form-label">Логин</label>
-                    <InputText class="form-control" @bind-Value="_model.Login"></InputText>
-                    <TabValidationMessage For="(() => _model.Login)"></TabValidationMessage>
-                  </div>
-                  <div class="mb-2">
-                    <label class="form-label">Пароль</label>
-                    <InputText type="password" class="form-control" @bind-Value="_model.Password"></InputText>
-                    <TabValidationMessage For="(() => _model.Password)"></TabValidationMessage>
-                  </div>
-        
-                  <Button Type="ButtonType.Submit" Text="Авторизоваться" class="mt-1 w-100"></Button>
-                </TablerForm>
-              </div>
-            </div>
+      <div class="auth-form">
+        <div class="auth-form-header">
+          Авторизация
+        </div>
+        <div class="auth-form-body">
+          <AuthorizeView>
+            <Authorized>
+              <div>Вы уже авторизованы</div>
+            </Authorized>
+            <NotAuthorized>
+              <TablerForm Model="@_model" OnValidSubmit="SubmitForm">
+                          <FluentValidationValidator/>
+                          <div class="mb-1">
+                            <label class="form-label">Логин</label>
+                            <InputText class="form-control" @bind-Value="_model.Login"></InputText>
+                            <TabValidationMessage For="(() => _model.Login)"></TabValidationMessage>
+                          </div>
+                          <div class="mb-2">
+                            <label class="form-label">Пароль</label>
+                            <InputText type="password" class="form-control" @bind-Value="_model.Password"></InputText>
+                            <TabValidationMessage For="(() => _model.Password)"></TabValidationMessage>
+                          </div>
+              
+                          <Button Type="ButtonType.Submit" Text="Авторизоваться" class="mt-1 w-100"></Button>
+                        </TablerForm>
+                        @if (_isShowError)
+                        {
+                          <div style="color: red">Введены неверные логин/пароль</div>
+                        }
+            </NotAuthorized>
+          </AuthorizeView>
+        </div>
+      </div>
     </div>
 </div>
 
 @code {
+  bool _isShowError;
   AuthDto _model = new AuthDto();
+  
+  [Inject] public UsersService UsersService { get; set; }
+  [Inject] public AuthenticationStateProvider StateProvider { get; set; }
+  [Inject] public NavigationManager NavigationManager { get; set; }
   
   async Task SubmitForm()
   {
-    await Task.CompletedTask;
+    var user = await UsersService.GetByEmail(_model.Login);
+    if (user == null || user.Password != _model.Password)
+    {
+      _isShowError = true;
+      return;
+    }
+    var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)StateProvider;
+    await customAuthenticationStateProvider.UpdateAuthenticationState(new UserSession()
+    {
+      Email = user.Email,
+      Role = user.Role.Name
+    });
+    NavigationManager.NavigateTo(NavigationManager.BaseUri + "adminka/dashboard", true);
   }
 }

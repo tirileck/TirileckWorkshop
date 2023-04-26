@@ -1,4 +1,6 @@
-﻿namespace TirileckWorkshop.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TirileckWorkshop.Data.Models;
 
 public class User
 {
@@ -21,5 +23,6 @@ public class User
     public Workshop? Workshop { get; set; }
     public long? WorkshopId { get; set; }
 
-    public ICollection<Role> Roles { get; set; }
+    public Role Role { get; set; }
+    public long? RoleId { get; set; }
 }

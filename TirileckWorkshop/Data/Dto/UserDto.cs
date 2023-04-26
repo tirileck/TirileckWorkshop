@@ -20,8 +20,9 @@ public class UserDto
 
     public string Password { get; set; }
 
-    public Workshop Workshop { get; set; }
+    public WorkshopDto Workshop { get; set; }
     public long? WorkshopId { get; set; }
 
-    public ICollection<Role> Roles { get; set; }
+    public RoleDto Role { get; set; }
+    public long? RoleId { get; set; }
 }

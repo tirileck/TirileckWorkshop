@@ -35,6 +35,14 @@ public class UsersService
         return _mapper.Map<UserDto>(addedUser);
     }
 
+    public async Task<UserDto?> GetByEmail(string email)
+    {
+        var user = await _context.Users
+            .Include(x => x.Role)
+            .FirstOrDefaultAsync(x => x.Email == email);
+        return user != null ? _mapper.Map<UserDto>(user) : null;
+    }
+
     public async Task<UserDto> EditUser(UserDto user)
     {
         var storageUser = _context.Users.First(x => x.Id == user.Id);

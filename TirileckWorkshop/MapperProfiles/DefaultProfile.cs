@@ -36,6 +36,7 @@ public class DefaultProfile : Profile
 
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<User, AddUserDto>().ReverseMap();
+        CreateMap<Role, RoleDto>().ReverseMap();
         CreateMap<AddOrderDto, Order>().ReverseMap();
     }
 }

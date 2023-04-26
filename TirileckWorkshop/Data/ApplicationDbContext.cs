@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TirileckWorkshop.Data.Enums;
 using TirileckWorkshop.Data.Models;
 
@@ -57,10 +58,12 @@ public class ApplicationDbContext : DbContext
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.WorkshopId);
         modelBuilder.Entity<User>()
-            .HasMany(x => x.Roles)
-            .WithMany(x => x.Users);
+            .HasOne(x => x.Role)
+            .WithMany()
+            .HasForeignKey(x => x.RoleId);
         
         
         base.OnModelCreating(modelBuilder);
+        
     }
 }

@@ -12,8 +12,8 @@ using TirileckWorkshop.Data;
 namespace TirileckWorkshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230423174025_InitMigration")]
-    partial class InitMigration
+    [Migration("20230425183810_AddInitial")]
+    partial class AddInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace TirileckWorkshop.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoleUser");
-                });
 
             modelBuilder.Entity("TirileckWorkshop.Data.Models.DeviceType", b =>
                 {
@@ -210,10 +195,16 @@ namespace TirileckWorkshop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("WorkshopId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("WorkshopId");
 
@@ -237,21 +228,6 @@ namespace TirileckWorkshop.Migrations
                     b.ToTable("WorkShops");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("TirileckWorkshop.Data.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TirileckWorkshop.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TirileckWorkshop.Data.Models.Order", b =>
                 {
                     b.HasOne("TirileckWorkshop.Data.Models.DeviceType", "DeviceType")
@@ -271,9 +247,17 @@ namespace TirileckWorkshop.Migrations
 
             modelBuilder.Entity("TirileckWorkshop.Data.Models.User", b =>
                 {
+                    b.HasOne("TirileckWorkshop.Data.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TirileckWorkshop.Data.Models.Workshop", "Workshop")
                         .WithMany("Users")
                         .HasForeignKey("WorkshopId");
+
+                    b.Navigation("Role");
 
                     b.Navigation("Workshop");
                 });

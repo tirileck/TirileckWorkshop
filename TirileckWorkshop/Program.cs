@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TirileckWorkshop.Data;
 using TirileckWorkshop.Data.Dto;
+using TirileckWorkshop.Data.Models;
 using TirileckWorkshop.MapperProfiles;
 using TirileckWorkshop.Services;
+using Microsoft.Extensions.DependencyInjection;
+using TirileckWorkshop.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,13 +35,16 @@ ServiceRegistrator.Register(builder.Services);
 MapperRegistrator.Register(builder.Services);
 
 // Auth
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/adminka/auth";
-        options.AccessDeniedPath = "/accessdenied";
+        options.AccessDeniedPath = "/adminka/auth";
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationCore();
+
 
 
 var app = builder.Build();

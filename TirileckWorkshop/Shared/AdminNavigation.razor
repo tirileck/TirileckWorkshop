@@ -1,4 +1,5 @@
 ﻿@using Tabler.Docs
+@using TirileckWorkshop.Authentication
 <Navbar Background="NavbarBackground.Dark" Direction="NavbarDirection.Vertical">
 
     <a href="https://github.com/joadan/Blazor-Tabler" class="navbar-brand navbar-brand-autodark">
@@ -21,6 +22,28 @@
                 <Icon class="icon" IconType="@TablerIcons.Users" />
             </MenuItemIcon>
         </NavbarMenuItem>
+        <AuthorizeView>
+            <Authorized>
+                <NavbarMenuItem OnClick="@Logout" Text="Выйти">
+                    <MenuItemIcon>
+                        <Icon class="icon" IconType="@TablerIcons.Users" />
+                    </MenuItemIcon>
+                </NavbarMenuItem>
+            </Authorized>
+        </AuthorizeView>
 
     </NavbarMenu>
 </Navbar>
+
+@code
+{
+    [Inject] public AuthenticationStateProvider StateProvider { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    
+    async Task Logout()
+    {
+        var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)StateProvider;
+        await customAuthenticationStateProvider.UpdateAuthenticationState(null);
+        NavigationManager.NavigateTo(NavigationManager.BaseUri + "adminka/auth", true);
+    }
+}
